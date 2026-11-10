@@ -1,0 +1,250 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FOUNDRY_PROFILE: default
+
+jobs:
+  contracts:
+    name: Contracts — build, size, test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      - name: Build
+        run: forge build
+
+      # EIP-170. Split out from `forge test` because a contract can pass every test and still be
+      # undeployable — which is exactly what happened when the vault deployers went over the limit.
+      - name: Contract sizes
+        run: ./script/check-sizes.sh
+
+      - name: Test
+        run: forge test -vv
+
+  offchain:
+    name: Off-chain — typecheck, unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: offchain
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: offchain/package-lock.json
+
+      - run: npm ci
+      - run: npm run typecheck
+      # The deploy job runs the separate KYT integration test against an actual Anvil chain.
+      - run: npm test
+
+  deploy:
+    name: Deploy — full stack on anvil
+    runs-on: ubuntu-latest
+    # A wedged forge broadcast used to hang this job until GitHub's 6h ceiling. deploy.ts now
+    # passes --slow --timeout, and this is the backstop if anything stalls in a new way.
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: offchain/package-lock.json
+
+      - name: Install off-chain deps
+        working-directory: offchain
+        run: npm ci
+
+      # anvil's stdio must NOT stay attached to this step's log pipe. GitHub closes that pipe when
+      # the step ends, so anything anvil writes afterwards earns it an EPIPE — and a dead node makes
+      # the deploy step below hang forever in ethers' receipt polling rather than fail. Redirect to
+      # a file instead, which also leaves us a log to read when something does go wrong.
+      - name: Start anvil
+        run: |
+          nohup anvil --port 8545 --silent > /tmp/anvil.log 2>&1 &
+          for i in $(seq 1 30); do
+            cast block-number --rpc-url http://127.0.0.1:8545 >/dev/null 2>&1 && exit 0
+            sleep 1
+          done
+          echo "anvil did not become ready" >&2
+          cat /tmp/anvil.log >&2
+          exit 1
+
+      # The real delivery scripts (core → platform, then one DeployVault run per vault), not a
+      # bespoke test fixture, so
+      # this catches deployment-only breakage that no unit test can: EIP-170 violations in
+      # constructor/init code, library linking, deployer bytecode limits, and the env plumbing between
+      # stages. Two such env bugs had gone unnoticed precisely because nothing ran this.
+      # Its own timeout, well under the job's: this step has twice hung after all three forge
+      # stages broadcast successfully, and burning the full 20-minute job budget to learn that
+      # tells us nothing the first two minutes would not have.
+      - name: Deploy full stack
+        working-directory: offchain
+        timeout-minutes: 8
+        run: |
+          set -o pipefail
+          npm run local:deploy 2>&1 | tee /tmp/local-deploy.log
+
+      - name: Diagnose a wedged deploy
+        if: failure()
+        run: |
+          echo "=== is anvil still alive? ==="
+          pgrep -a anvil || echo "  anvil is NOT running"
+          cast block-number --rpc-url http://127.0.0.1:8545 || echo "  anvil is not answering RPC"
+          echo "=== anvil log ==="
+          cat /tmp/anvil.log || echo "  (no log)"
+
+      - name: Save local deployment diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-deployment-diagnostics
+          path: |
+            /tmp/local-deploy.log
+            /tmp/anvil.log
+          if-no-files-found: ignore
+
+      - name: Assert deployed bytecode is non-empty and within EIP-170
+        run: |
+          python3 - <<'PY' > /tmp/assert.sh
+          import glob, json
+          a = {}
+          # Every stage must have produced its file. A missing one used to be swallowed here, so
+          # a renamed or unwritten stage output silently reduced this assertion to stage 1 only.
+          for f in ["control-panel/deployments.json",
+                    "control-panel/deployments-platform.json"]:
+              a.update(json.load(open(f))["addresses"])
+          # One file per vault — a deployment can have any number of them.
+          for f in sorted(glob.glob("control-panel/deployments-vault-*.json")):
+              v = json.load(open(f))["vault"]
+              a[v["label"] + ":vault"] = v["vault"]
+              a[v["label"] + ":adapter"] = v["adapter"]
+          assert a, "no deployment artifacts were produced"
+          print("FAIL=0")
+          for name, addr in sorted(a.items()):
+              print(f'S=$(cast code {addr} --rpc-url http://127.0.0.1:8545 | wc -c); S=$(( (S-3)/2 ));'
+                    f' if [ "$S" -le 0 ]; then echo "  !! {name}: NO CODE at {addr}"; FAIL=1;'
+                    f' elif [ "$S" -gt 24576 ]; then echo "  !! {name}: $S bytes OVER EIP-170"; FAIL=1;'
+                    f' else printf "  ok %-26s %6d bytes\\n" "{name}" "$S"; fi')
+          print('if [ "$FAIL" != "0" ]; then exit 1; fi')
+          PY
+          bash /tmp/assert.sh
+
+      # "It has code" is a weak check on its own — read state only the constructor could have set,
+      # so a vault that deployed but was left unwired still fails here.
+      - name: Assert vaults are constructed and wired
+        run: |
+          VAULT=$(python3 -c "import json;print(json.load(open('control-panel/deployments-vault-cash.json'))['vault']['vault'])")
+          R=http://127.0.0.1:8545
+          NAME=$(cast call "$VAULT" 'name()(string)' --rpc-url $R)
+          OWNER=$(cast call "$VAULT" 'owner()(address)' --rpc-url $R)
+          SM=$(cast call "$VAULT" 'stateManager()(address)' --rpc-url $R)
+          echo "CashVault $VAULT -> name=$NAME owner=$OWNER stateManager=$SM"
+          [ -n "$NAME" ] && [ "$NAME" != '""' ] || { echo "vault name empty — initialize() did not run"; exit 1; }
+          [ "$OWNER" != "0x0000000000000000000000000000000000000000" ] || { echo "vault owner unset"; exit 1; }
+          [ "$SM" != "0x0000000000000000000000000000000000000000" ] || { echo "vault stateManager unset"; exit 1; }
+
+      # The whole point of the split is that a client can add a vault later, on its own, against a
+      # platform that already exists. Nothing else exercises that, so CI deploys a fourth vault
+      # through the real driver — which also covers the driver's address threading and the merge.
+      - name: Add a fourth vault through script/deploy.sh
+        run: ./script/deploy.sh --network anvil --vault cash --label cash2
+
+      - name: Assert the added vault is fully wired
+        run: |
+          R=http://127.0.0.1:8545
+          lower() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]'; }
+          M=control-panel/deployments-merged.json
+          VAULT=$(jq -r '.vaults[]|select(.label=="cash2")|.vault' $M)
+          POOL=$(jq -r .addresses.UnifiedPool $M)
+          SETTLEMENT=$(jq -r .addresses.Settlement $M)
+          CR=$(jq -r .addresses.ClaimRegistry $M)
+          BRIDGE=$(jq -r .addresses.LiquidityBridge $M)
+          echo "cash2 vault=$VAULT"
+          # A vault the protocol has not admitted to the pool, or has not bound to Settlement, looks
+          # deployed and reverts on its first real settlement. Check the whole admission path.
+          [ "$(cast call "$POOL" 'vaultWhitelisted(address)(bool)' "$VAULT" --rpc-url $R)" = "true" ] \
+            || { echo "cash2 not whitelisted in UnifiedPool"; exit 1; }
+          [ "$(cast call "$BRIDGE" 'bridgeWhitelisted(address)(bool)' "$VAULT" --rpc-url $R)" = "true" ] \
+            || { echo "cash2 not whitelisted on the LiquidityBridge"; exit 1; }
+          GOT=$(cast call "$VAULT" 'settlement()(address)' --rpc-url $R)
+          [ "$(lower "$GOT")" = "$(lower "$SETTLEMENT")" ] || { echo "settlement $GOT != $SETTLEMENT"; exit 1; }
+          GOT=$(cast call "$VAULT" 'claimRegistry()(address)' --rpc-url $R)
+          [ "$(lower "$GOT")" = "$(lower "$CR")" ] || { echo "claimRegistry $GOT != $CR"; exit 1; }
+          [ "$(cast call "$SETTLEMENT" 'threshold(address)(uint256)' "$VAULT" --rpc-url $R)" != "0" ] \
+            || { echo "cash2 has no settlement threshold"; exit 1; }
+          for call in 'curator()(address)' 'guardian()(address)' 'allocator()(address)' 'unifiedPool()(address)'; do
+            V=$(cast call "$VAULT" "$call" --rpc-url $R)
+            [ "$V" != "0x0000000000000000000000000000000000000000" ] || { echo "$call unset"; exit 1; }
+          done
+          # Adding a vault must not disturb the ones already deployed.
+          [ "$(jq '.vaults|length' $M)" = "4" ] || { echo "expected 4 vaults in the address book"; exit 1; }
+          echo "added vault OK"
+
+      # The merged address book is what the control panel and the off-chain services load.
+      - name: Assert the merged address book is complete
+        run: |
+          python3 - <<'PY'
+          import json
+          m = json.load(open("control-panel/deployments-merged.json"))["addresses"]
+          required = ["HyperAccessControl", "StateManager", "UnifiedPool", "Settlement",
+                      "VaultFactory", "AdapterFactory", "LiquidityBridge", "ClaimRegistry",
+                      # The flat per-kind keys the panel and the off-chain SDK read. They are
+                      # derived from the cash/note/lp labels, so a labelling change breaks them
+                      # silently unless they are asserted here.
+                      "CashVault", "NoteVault", "LPVault",
+                      "CashAdapter", "NoteAdapter", "LPAdapter"]
+          missing = [k for k in required if not m.get(k)]
+          assert not missing, f"merged address book is missing: {missing}"
+          print(f"merged address book OK ({len(m)} addresses)")
+          PY
+
+      # Run last: the integration fixture writes its own local deployment address files.
+      - name: KYT runner and Gateway integration on Anvil
+        working-directory: offchain
+        timeout-minutes: 10
+        env:
+          KYT_EVIDENCE_PATH: ${{ runner.temp }}/kyt-integration-evidence.json
+        run: npx vitest run --no-file-parallelism test/kytScreening.integration.test.ts
+
+      - name: Save KYT integration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kyt-integration-evidence
+          path: ${{ runner.temp }}/kyt-integration-evidence.json
+          if-no-files-found: ignore
+
+      - name: KYT SDK and control-panel integration on Anvil
+        working-directory: offchain
+        timeout-minutes: 10
+        run: npx vitest run --no-file-parallelism test/kytSdkPanel.integration.test.ts

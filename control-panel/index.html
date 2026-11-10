@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>hyperTessera · W2 Control Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#07090d; --panel:#0e1219; --panel2:#11161f; --line:#1c2430;
+    --txt:#c4cedd; --dim:#6a7686; --amber:#ffb12b; --cyan:#54c8ff;
+    --green:#3ddc97; --red:#ff5d5d; --violet:#b388ff;
+    --gov:#ffb12b; --cur:#54c8ff; --grd:#ff5d5d; --iss:#3ddc97; --agt:#b388ff; --sig:#ff8fab;
+    --por:#f9a825; --psm:#4dd0e1; --que:#ce93d8; --rev:#a5d6a7; --uni:#90caf9; --cmp:#e040fb;
+    --stl:#ff7043; --adp:#66bb6a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;line-height:1.5;}
+  body{
+    background-image:
+      linear-gradient(rgba(84,200,255,.015) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(84,200,255,.015) 1px,transparent 1px);
+    background-size:32px 32px;
+    min-height:100vh;
+  }
+  a{color:var(--cyan)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px 80px}
+
+  /* top bar */
+  header{position:sticky;top:0;z-index:20;background:rgba(7,9,13,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .bar{max-width:1180px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .brand{font-weight:700;letter-spacing:.5px;font-size:15px}
+  .brand b{color:var(--amber)}
+  .brand .tag{color:var(--dim);font-weight:400;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-left:8px}
+  .spacer{flex:1}
+  .net{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red)}
+  .dot.ok{background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+  button.connect{background:var(--amber);color:#1a1205;border:none;padding:9px 16px;font-family:inherit;
+    font-weight:700;letter-spacing:.5px;cursor:pointer;border-radius:2px;text-transform:uppercase;font-size:12px}
+  button.connect:hover{filter:brightness(1.12)}
+  .acct{font-size:12px;color:var(--txt)}
+  .acct .addr{color:var(--cyan)}
+
+  /* hero / status strip */
+  .status{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;
+    background:var(--line);border:1px solid var(--line);margin:22px 0;border-radius:3px;overflow:hidden}
+  .status .cell{background:var(--panel);padding:14px 16px}
+  .status .k{color:var(--dim);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
+  .status .v{font-size:14px;margin-top:5px;word-break:break-all}
+  .roles{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .rb{font-size:10px;padding:3px 7px;border-radius:2px;letter-spacing:.6px;text-transform:uppercase;
+    border:1px solid currentColor;font-weight:600}
+  .rb.GOVERNOR{color:var(--gov)} .rb.CURATOR{color:var(--cur)} .rb.GUARDIAN{color:var(--grd)}
+  .rb.ISSUER{color:var(--iss)} .rb.TOKEN_AGENT{color:var(--agt)} .rb.none{color:var(--dim)}
+  .rb.DATA_PROVIDER{color:var(--por)} .rb.COMPLIANCE{color:var(--cmp)} .rb.SETTLEMENT{color:var(--que)}
+
+  h2.section{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);
+    margin:30px 0 12px;border-bottom:1px solid var(--line);padding-bottom:8px}
+
+  .module{border:1px solid var(--line);border-radius:3px;margin-bottom:14px;background:var(--panel);overflow:hidden}
+  .module > .mhead{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--panel2);
+    border-bottom:1px solid var(--line);cursor:pointer}
+  .mhead .mname{font-weight:600;letter-spacing:.5px}
+  .mhead .maddr{color:var(--dim);font-size:11px}
+  .mhead .chev{margin-left:auto;color:var(--dim);transition:transform .2s}
+  .module.collapsed .mbody{display:none}
+  .module.collapsed .chev{transform:rotate(-90deg)}
+  .mtag{width:3px;align-self:stretch}
+  .mbody{padding:6px 0}
+
+  .action{display:grid;grid-template-columns:230px 1fr auto;gap:12px;align-items:center;
+    padding:11px 16px;border-bottom:1px solid rgba(28,36,48,.5)}
+  .action:last-child{border-bottom:none}
+  .action .meta .fn{font-weight:600}
+  .action .meta .role{font-size:10px;letter-spacing:.6px;text-transform:uppercase;margin-top:3px}
+  .action .meta .note{font-size:10.5px;color:var(--dim);margin-top:3px}
+  .role.req{color:var(--amber)} .role.read{color:var(--dim)}
+  .inputs{display:flex;gap:8px;flex-wrap:wrap}
+  .inputs input,.inputs select{background:#080b10;border:1px solid var(--line);color:var(--txt);
+    font-family:inherit;font-size:12px;padding:7px 9px;border-radius:2px;min-width:120px}
+  .inputs input:focus,.inputs select:focus{outline:none;border-color:var(--cyan)}
+  .inputs input::placeholder{color:#3c4554}
+  button.run{background:transparent;border:1px solid var(--cyan);color:var(--cyan);font-family:inherit;
+    font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;padding:8px 14px;
+    cursor:pointer;border-radius:2px;white-space:nowrap}
+  button.run:hover{background:rgba(84,200,255,.1)}
+  button.run.write{border-color:var(--amber);color:var(--amber)}
+  button.run.write:hover{background:rgba(255,177,43,.1)}
+  button.run:disabled{opacity:.4;cursor:not-allowed}
+
+  /* log console */
+  .console{position:fixed;bottom:0;left:0;right:0;height:190px;background:#05070a;border-top:1px solid var(--line);
+    display:flex;flex-direction:column;z-index:30}
+  .console .chead{display:flex;align-items:center;gap:10px;padding:7px 16px;border-bottom:1px solid var(--line);
+    font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+  .console .clog{flex:1;overflow:auto;padding:8px 16px;font-size:12px}
+  .logline{padding:2px 0;white-space:pre-wrap;word-break:break-all}
+  .logline.t{color:var(--dim)} .logline.ok{color:var(--green)} .logline.err{color:var(--red)}
+  .logline.info{color:var(--cyan)} .logline .h{color:var(--amber)}
+  .console .clear{margin-left:auto;cursor:pointer;color:var(--dim);border:1px solid var(--line);
+    padding:3px 9px;border-radius:2px}
+  .banner{background:rgba(255,93,93,.1);border:1px solid var(--red);color:#ffb3b3;padding:12px 16px;
+    border-radius:3px;margin:18px 0;font-size:12px;display:none}
+  .hint{color:var(--dim);font-size:11px;margin:4px 0 0}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">hyper<b>Tessera</b><span class="tag">W2 Control Console</span></div>
+    <div class="spacer"></div>
+    <div class="net"><span id="dot" class="dot"></span><span id="netlabel">disconnected</span></div>
+    <div id="acctbox" class="acct"></div>
+    <button id="connect" class="connect">Connect Wallet</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="banner" class="banner"></div>
+
+  <div class="status">
+    <div class="cell"><div class="k">Network</div><div class="v" id="s-net">—</div></div>
+    <div class="cell"><div class="k">Connected account</div><div class="v" id="s-acct">—</div></div>
+    <div class="cell"><div class="k">Detected roles</div><div class="roles" id="s-roles"><span class="rb none">not connected</span></div></div>
+    <div class="cell"><div class="k">RWA Token</div><div class="v" id="s-vault">—</div></div>
+    <div class="cell"><div class="k">Settlement token</div><div class="v" id="s-usdt">—</div></div>
+  </div>
+  <p class="hint">Switch accounts in MetaMask to act as a different role. On Anvil the deploy script pre-grants roles to the standard test accounts (see deployments.json / the delivery report).</p>
+
+  <h2 class="section">Vault KYT / Gate</h2>
+  <section id="kyt-panel" class="module" style="padding:16px">
+    <p class="hint">Live Vault.gate() selects the deposit route. CONFIGURING: Owner sets Gate directly.
+      Other states: schedule through this Vault's Timelock, then execute after the delay.</p>
+    <div class="inputs"><label>Vault <select id="kyt-vault"></select></label>
+      <label>Or Vault address <input id="kyt-custom-vault" placeholder="0x… (optional)"></label>
+      <button id="kyt-refresh" class="run">Read live Gate / pending changes</button></div>
+    <div class="inputs" style="margin-top:12px">
+      <label>Gateway (current or candidate) <input id="kyt-gateway" placeholder="0x…"></label>
+      <button id="kyt-inspect" class="run">Inspect Gateway</button>
+      <button id="kyt-enable" class="run write">Connect / replace Gateway</button>
+      <button id="kyt-disable" class="run write">Disable KYT (Gate = 0)</button></div>
+    <div class="inputs" style="margin-top:12px">
+      <label>Gate change ID <input id="kyt-change" placeholder="0x…"></label>
+      <button id="kyt-change-read" class="run">Read change</button>
+      <button id="kyt-execute" class="run write">Execute ready change</button>
+      <button id="kyt-cancel" class="run write">Cancel change</button></div>
+    <div class="inputs" style="margin-top:12px">
+      <label>Gateway administration <select id="kyt-admin-method"><option value="setOracle">Change oracle</option>
+        <option value="setValidityPeriod">Change validity (seconds)</option><option value="transferAdmin">Transfer Gateway admin</option></select></label>
+      <input id="kyt-admin-value" aria-label="Gateway admin value" placeholder="New address or seconds">
+      <button id="kyt-admin" class="run write">Submit as Gateway admin</button>
+      <label>Screening request ID <input id="kyt-request" placeholder="1"></label>
+      <button id="kyt-request-read" class="run">Read screening request</button></div>
+    <p class="hint">The Vault requestDeposit buttons below select the live route and request missing approvals.
+      Screening requests move no funds. EXECUTED means queued in the Vault, not settled shares.
+      Disabling Gate does not cancel earlier requests.</p>
+    <pre id="kyt-status" style="white-space:pre-wrap;overflow-wrap:anywhere">Connect a wallet to read chain state.</pre>
+  </section>
+  <h2 class="section">Modules</h2>
+  <div id="modules"></div>
+</div>
+
+<div class="console">
+  <div class="chead">Transaction Log<span class="clear" id="clear">clear</span></div>
+  <div class="clog" id="clog"></div>
+</div>
+
+<!-- Config + ABIs as plain scripts so the panel works from file:// with no server.
+     Generated by `forge script Deploy` (config.js) and `./build-abis.sh` (abis.js).
+     Missing files 404 harmlessly; boot() then falls back to fetch(). -->
+<script src="abis.js"></script>
+<script src="config.js"></script>
+<script src="kyt.js"></script>
+<script>
+const $ = (s,r=document)=>r.querySelector(s);
+// GOVERNOR_ROLE is the only protocol-global role left. Curator/Guardian/Allocator/Keeper are
+// Vault-local (BaseVault), Issuer/Token Agent/Proof Publisher are asset-local (AssetRegistry),
+// Settlement Operator is per-Vault (Settlement), Wrapper Controller is per-PSM-assetId.
+const ROLE_NAMES = ["GOVERNOR"];
+const TRANCHE_NAMES = ["Cash (0)","Note (1)","LP (2)"];
+const MODULE_IDS = ["CASH_VAULT","NOTE_VAULT","LP_VAULT","SETTLEMENT","PSM_POOL","TOKENIZATION","REWARD","CLAIM_REGISTRY"];
+const PRODUCT_STATE_NAMES = ["CONFIGURING","SUBSCRIBING","FUNDING_FAILED","OPERATING","SETTLING","MATURING","CLAIMING","CLOSED"];
+const CYCLE_STATE_NAMES = ["ACCEPTING","CALCULATING","FULFILLING","COMPLETED"];
+const PAUSE_REASON_NAMES = ["PAUSED_BY_GUARDIAN","PAUSED_BY_GOVERNOR"]; // ACTIVE(0) excluded — pause() rejects it
+const ACTION_CLASS_NAMES = ["OWNER","CURATOR"];
+const ASSET_MODE_NAMES = ["TOKEN_CUSTODY","DOCUMENT_PROOF"];
+const QUEUE_TYPE_NAMES = ["DEPOSIT","REDEEM"];
+const FEE_KIND_NAMES = ["Native","Governance","Stable"];
+const CREATION_FEE_ACTION_NAMES = ["RegisterAsset","DeployVault"];
+const BOOL_NAMES = ["true","false"];
+const roleHash = (n)=>ethers.id(n+"_ROLE");
+
+let provider, signer, account, chainId, deployments, abis;
+
+// decimals() of the settlement token this deployment settles in, or null until it has been read
+// off-chain. 6 on BSC testnet's MockUSDT, 18 on BSC mainnet USDT
+// (0x55d398326f99059fF775485246999027B3197955) — never assumed, always read, because every
+// `usdt` input below is denominated in that token's base units.
+let usdtDecimals = null;
+const contracts = {};
+let myRoles = [];
+
+let kytBusy=false;
+function kytClient(){
+  if(!provider || !signer) throw new Error("Connect a wallet first");
+  if(!window.HT_KYT || !abis?.KYTDepositGateway) throw new Error("Regenerate the Gateway ABI and panel bundle first");
+  return window.HT_KYT.createClient({ethers,abis,provider,signer,chainId:deployments?.chainId});
+}
+function kytVault(){return ethers.getAddress($("#kyt-custom-vault").value.trim() || $("#kyt-vault").value);}
+function kytText(value){$("#kyt-status").textContent=typeof value==="string"?value:JSON.stringify(value,(_,v)=>typeof v==="bigint"?v.toString():v,2);}
+function kytMemoryKey(vault){return `ht:gate-change:${deployments?.chainId}:${vault.toLowerCase()}`;}
+async function kytAction(action){
+  if(kytBusy) return;
+  kytBusy=true; const controls=document.querySelectorAll("#kyt-panel button,#kyt-panel input,#kyt-panel select");
+  controls.forEach(el=>el.disabled=true);
+  try {kytText("Reading chain / waiting for wallet confirmation…"); kytText(await action(kytClient()));}
+  catch(e){kytText(`${e.shortMessage||e.message}${e.txHash?`\nSubmitted transaction: ${e.txHash}. Inspect before retrying.`:""}`);}
+  finally {kytBusy=false; controls.forEach(el=>el.disabled=false);}
+}
+function kytPopulateVaults(){
+  const select=$("#kyt-vault"),seen=new Set(); select.replaceChildren();
+  const rows=[...(deployments?.vaults||[]),...["Cash","Note","LP"].map(label=>({label,vault:deployments?.addresses?.[label+"Vault"]}))];
+  for(const row of rows){
+    if(!row.vault || seen.has(row.vault.toLowerCase())) continue;
+    seen.add(row.vault.toLowerCase()); const option=document.createElement("option");
+    option.value=row.vault; option.textContent=`${row.label||"Vault"}: ${row.vault}`; select.appendChild(option);
+  }
+}
+async function kytRead(client){
+  const vault=kytVault(),ctx=await client.context(vault);
+  if(!$("#kyt-gateway").value.trim() && ctx.gate!==ethers.ZeroAddress) $("#kyt-gateway").value=ctx.gate;
+  try {if(!$("#kyt-change").value) $("#kyt-change").value=localStorage.getItem(kytMemoryKey(vault))||"";} catch(_){}
+  return {...ctx,mode:ctx.gate===ethers.ZeroAddress?"KYT disabled":"KYT enabled (binding checked below)",
+    gateway:ctx.gate===ethers.ZeroAddress?null:await client.gatewayInfo(vault,ctx.gate),pendingGateChanges:await client.listChanges(vault)};
+}
+async function kytSet(client,vault,gate){
+  const result=await client.changeGate(vault,gate);
+  if(result.kind==="scheduled"){
+    $("#kyt-change").value=result.change.id;
+    try {localStorage.setItem(kytMemoryKey(vault),result.change.id);} catch(_){}
+    return {status:"Scheduled only; current Gate is unchanged",hash:result.receipt.hash,change:result.change};
+  }
+  return {status:"Gate update confirmed",hash:result.receipt.hash,liveGate:result.gate};
+}
+const kytHandlers={
+  "refresh":kytRead,
+  "inspect":c=>c.gatewayInfo(kytVault(),$("#kyt-gateway").value.trim()),
+  "enable":c=>kytSet(c,kytVault(),$("#kyt-gateway").value.trim()),
+  "disable":c=>kytSet(c,kytVault(),ethers.ZeroAddress),
+  "change-read":c=>c.getChange(kytVault(),$("#kyt-change").value.trim()),
+  "execute":async c=>{const r=await c.executeChange(kytVault(),$("#kyt-change").value.trim());return {status:"Execution confirmed",hash:r.receipt.hash,liveGate:r.gate};},
+  "cancel":async c=>({status:"Cancellation confirmed",hash:(await c.cancelChange(kytVault(),$("#kyt-change").value.trim())).hash}),
+  "admin":async c=>({status:"Gateway configuration confirmed",hash:(await c.administer(kytVault(),$("#kyt-gateway").value.trim(),$("#kyt-admin-method").value,$("#kyt-admin-value").value.trim())).hash}),
+  "request-read":c=>c.getRequest(kytVault(),$("#kyt-gateway").value.trim(),$("#kyt-request").value.trim()),
+};
+for(const [id,handler] of Object.entries(kytHandlers)) $("#kyt-"+id).onclick=()=>kytAction(handler);
+for(const id of ["kyt-vault","kyt-custom-vault"]) $("#"+id).onchange=()=>{
+  $("#kyt-gateway").value=""; $("#kyt-change").value=""; if(signer) kytAction(kytRead);
+};
+
+function log(msg, cls="t"){
+  const el = document.createElement("div");
+  el.className = "logline "+cls;
+  const ts = new Date().toLocaleTimeString();
+  el.innerHTML = `<span style="color:#3c4554">${ts}</span>  ${msg}`;
+  $("#clog").prepend(el);
+}
+$("#clear").onclick = ()=>$("#clog").innerHTML="";
+
+// ---- Action registry --------------------------------------------------------
+const MODULES = [
+  { name:"HyperAccessControl", key:"HyperAccessControl", accent:"var(--gov)", actions:[
+    {fn:"grantRole", role:"GOVERNOR", method:"grantRole", kind:"tx",
+      args:[{n:"role",t:"role"},{n:"account",t:"address"}], note:"Governor is admin of every role"},
+    {fn:"revokeRole", role:"GOVERNOR", method:"revokeRole", kind:"tx",
+      args:[{n:"role",t:"role"},{n:"account",t:"address"}]},
+    {fn:"hasRole", role:null, method:"hasRole", kind:"read",
+      args:[{n:"role",t:"role"},{n:"account",t:"address"}]},
+    {fn:"getRoleAdmin", role:null, method:"getRoleAdmin", kind:"read", args:[{n:"role",t:"role"}],
+      note:"always GOVERNOR_ROLE"},
+  ]},
+  { name:"AssetRegistry", key:"AssetRegistry", accent:"var(--cur)", actions:[
+    {fn:"registerAsset → (assetId, token)", role:null, method:"registerAsset", kind:"tx",
+      args:[{n:"metadataHash (text→keccak)",t:"hash"},{n:"name",t:"str"},{n:"symbol",t:"str"},{n:"decimals",t:"uint",def:"18"},
+            {n:"feeKind",t:"feeKind",def:"Native"},
+            {n:"产品名称 productName",t:"str"},
+            {n:"年化收益率 annualYieldRateBps (500 = 5%)",t:"uint",def:"500"},
+            {n:"到期日 maturityTimestamp",t:"date"},
+            {n:"投资标的 underlyingAsset",t:"str"}],
+      note:"permissionless — caller becomes owner; deploys a dedicated RWAToken. Payable — pays ProtocolFeeConfig's RegisterAsset fee for the chosen feeKind (0 in this demo config, so no value needs to be sent). ProductInfo.issuer has no input field: the contract forces issuer = msg.sender and ignores any other value, so this UI sends the connected account for it"},
+    {fn:"updateMetadataHash", role:"asset owner", method:"updateMetadataHash", kind:"tx",
+      args:[{n:"assetId",t:"uint"},{n:"newHash (text→keccak)",t:"hash"}]},
+    {fn:"transferAssetOwnership", role:"asset owner", method:"transferAssetOwnership", kind:"tx",
+      args:[{n:"assetId",t:"uint"},{n:"newOwner",t:"address"}]},
+    {fn:"deactivateAsset", role:"asset owner", method:"deactivateAsset", kind:"tx",
+      args:[{n:"assetId",t:"uint"}]},
+    {fn:"getAsset", role:null, method:"getAsset", kind:"read", args:[{n:"assetId",t:"uint"}]},
+    {fn:"tokenOf", role:null, method:"tokenOf", kind:"read", args:[{n:"assetId",t:"uint"}]},
+    {fn:"ownerOf", role:null, method:"ownerOf", kind:"read", args:[{n:"assetId",t:"uint"}]},
+    {fn:"isActive", role:null, method:"isActive", kind:"read", args:[{n:"assetId",t:"uint"}]},
+    {fn:"nextAssetId", role:null, method:"nextAssetId", kind:"read", args:[]},
+    {fn:"mintBurnController", role:null, method:"mintBurnController", kind:"read", args:[],
+      note:"deployed and owned by AssetRegistry itself — fixed at construction, no setter"},
+  ]},
+  { name:"ProtocolFeeConfig", key:"ProtocolFeeConfig", accent:"var(--gov)", actions:[
+    {fn:"setFee", role:"GOVERNOR", method:"setFee", kind:"tx",
+      args:[{n:"action",t:"creationFeeAction",def:"RegisterAsset"},{n:"kind",t:"feeKind",def:"Native"},{n:"amount",t:"uint",def:"0"}],
+      note:"sets the fee table entry consulted by AssetRegistry.registerAsset (RegisterAsset) / VaultFactory.deployVault (DeployVault) for that payment kind"},
+    {fn:"setPaymentToken", role:"GOVERNOR", method:"setPaymentToken", kind:"tx",
+      args:[{n:"kind",t:"feeKind",def:"Governance"},{n:"token",t:"address"}],
+      note:"Native has no configurable payment token — reverts NativeKindHasNoToken"},
+    {fn:"setRevenuePool", role:"GOVERNOR", method:"setRevenuePool", kind:"tx",
+      args:[{n:"pool",t:"address",def:"revenuePool"}]},
+    {fn:"feeOf", role:null, method:"feeOf", kind:"read",
+      args:[{n:"action",t:"creationFeeAction",def:"RegisterAsset"},{n:"kind",t:"feeKind",def:"Native"}]},
+    {fn:"paymentTokenOf", role:null, method:"paymentTokenOf", kind:"read", args:[{n:"kind",t:"feeKind",def:"Governance"}]},
+    {fn:"revenuePool", role:null, method:"revenuePool", kind:"read", args:[]},
+  ]},
+  { name:"RWAToken (per-asset ERC-20)", key:"RWAToken", accent:"var(--iss)", actions:[
+    {fn:"balanceOf", role:null, method:"balanceOf", kind:"read", args:[{n:"account",t:"address"}],
+      note:"address of deployed per-asset token — get from AssetRegistry.tokenOf(assetId)"},
+    {fn:"totalSupply", role:null, method:"totalSupply", kind:"read", args:[]},
+    {fn:"name / symbol / decimals", role:null, method:"name", kind:"read", args:[]},
+    {fn:"mintBurnController", role:null, method:"mintBurnController", kind:"read", args:[]},
+    {fn:"transferPathCount", role:null, method:"transferPathCount", kind:"read", args:[]},
+    {fn:"transferPaths(index)", role:null, method:"transferPaths", kind:"read", args:[{n:"index (0–9)",t:"uint"}]},
+    {fn:"isInList(listId, account)", role:null, method:"isInList", kind:"read",
+      args:[{n:"listId (uint8)",t:"uint"},{n:"account",t:"address"}]},
+    {fn:"whitelistEnabled", role:null, method:"whitelistEnabled", kind:"read", args:[]},
+    {fn:"setWhitelistEnabled", role:"asset issuer", method:"setWhitelistEnabled", kind:"tx",
+      args:[{n:"enabled",t:"bool",def:"true"}]},
+    {fn:"isWhitelisted", role:null, method:"isWhitelisted", kind:"read", args:[{n:"account",t:"address"}]},
+    {fn:"addToWhitelist", role:"asset issuer", method:"addToWhitelist", kind:"tx",
+      args:[{n:"accounts (comma-sep addresses)",t:"addrlist"}]},
+    {fn:"removeFromWhitelist", role:"asset issuer", method:"removeFromWhitelist", kind:"tx",
+      args:[{n:"accounts (comma-sep addresses)",t:"addrlist"}]},
+    {fn:"transferPathEnabled", role:null, method:"transferPathEnabled", kind:"read", args:[]},
+    {fn:"setTransferPathEnabled", role:"asset issuer", method:"setTransferPathEnabled", kind:"tx",
+      args:[{n:"enabled",t:"bool",def:"true"}]},
+    {fn:"setTransferPaths", role:"asset issuer", method:"setTransferPaths", kind:"tx",
+      args:[{n:"indexes (comma-sep uint8)",t:"uint8list"},{n:"fromListIds (comma-sep)",t:"uint8list"},{n:"toListIds (comma-sep)",t:"uint8list"}],
+      note:"configure up to 10 paths; 0 paths = no restriction"},
+    {fn:"addToAddressList", role:"asset issuer", method:"addToAddressList", kind:"tx",
+      args:[{n:"listId (uint8)",t:"uint"},{n:"accounts (comma-sep addresses)",t:"addrlist"}]},
+    {fn:"removeFromAddressList", role:"asset issuer", method:"removeFromAddressList", kind:"tx",
+      args:[{n:"listId (uint8)",t:"uint"},{n:"accounts (comma-sep addresses)",t:"addrlist"}]},
+  ]},
+  { name:"NAVOracle", key:"NAVOracle", accent:"var(--sig)", actions:[
+    {fn:"updateNAV (sign+submit)", role:"NAV signer", method:"updateNAV", kind:"navEip712",
+      args:[{n:"rwaToken",t:"address",def:"rwaAdapterToken"},{n:"price (1e18-scale)",t:"uint",def:"1000000000000000000"},
+            {n:"dataTimestamp",t:"uint",def:"now"}],
+      note:"connected wallet must be the registered signer for rwaToken; signs an EIP-712 NAVUpdate struct"},
+    {fn:"setSigner", role:"OWNER", method:"setSigner", kind:"tx",
+      args:[{n:"rwaToken",t:"address",def:"rwaAdapterToken"},{n:"signer",t:"address"}]},
+    {fn:"removeSigner", role:"OWNER", method:"removeSigner", kind:"tx",
+      args:[{n:"rwaToken",t:"address",def:"rwaAdapterToken"}]},
+    {fn:"transferOwnership", role:"OWNER", method:"transferOwnership", kind:"tx",
+      args:[{n:"newOwner",t:"address"}]},
+    {fn:"setNAVDeviationMaxBps", role:"OWNER", method:"setNAVDeviationMaxBps", kind:"tx",
+      args:[{n:"newBps (>0, no upper bound)",t:"uint",def:"2000"}],
+      note:"caps how far a single updateNAV may raise the price; only upward moves are capped, downward is always uncapped"},
+    {fn:"getNAV", role:null, method:"getNAV", kind:"read", args:[{n:"rwaToken",t:"address",def:"rwaAdapterToken"}]},
+    {fn:"getPriceData", role:null, method:"getPriceData", kind:"read", args:[{n:"rwaToken",t:"address",def:"rwaAdapterToken"}]},
+    {fn:"signerOf", role:null, method:"signerOf", kind:"read", args:[{n:"rwaToken",t:"address",def:"rwaAdapterToken"}]},
+    {fn:"navDeviationMaxBps", role:null, method:"navDeviationMaxBps", kind:"read", args:[]},
+    {fn:"owner", role:null, method:"owner", kind:"read", args:[]},
+  ]},
+  { name:"MintBurnController", key:"MintBurnController", accent:"var(--agt)", actions:[
+    {fn:"initiateMint → nonce", role:"asset issuer (= AssetRegistry.ownerOf(assetId))", method:"initiateMint", kind:"tx",
+      args:[{n:"assetId",t:"uint",def:"1"},{n:"amount",t:"uint",def:"1000000"},{n:"to",t:"address"}],
+      note:"issuerSig removed — authority is the assetId's on-chain owner, not an unverified signature"},
+    {fn:"approveMint", role:"asset token agent", method:"approveMint", kind:"tx",
+      args:[{n:"nonce",t:"uint"}]},
+    {fn:"initiateBurn → nonce", role:"asset issuer (= AssetRegistry.ownerOf(assetId))", method:"initiateBurn", kind:"tx",
+      args:[{n:"assetId",t:"uint",def:"1"},{n:"amount",t:"uint"},{n:"from",t:"address"}]},
+    {fn:"approveBurn", role:"asset token agent", method:"approveBurn", kind:"tx",
+      args:[{n:"nonce",t:"uint"}]},
+    {fn:"setTokenAgent", role:"asset owner", method:"setTokenAgent", kind:"tx",
+      args:[{n:"assetId",t:"uint",def:"1"},{n:"agent",t:"address"}], note:"per-assetId; no global TOKEN_AGENT_ROLE"},
+    {fn:"tokenAgentOf", role:null, method:"tokenAgentOf", kind:"read", args:[{n:"assetId",t:"uint",def:"1"}]},
+    {fn:"rwaTokens (per-assetId mapping)", role:null, method:"rwaTokens", kind:"read",
+      args:[{n:"assetId",t:"uint"}], note:"populated by registerToken (called by AssetRegistry)"},
+    {fn:"mintRequests", role:null, method:"mintRequests", kind:"read", args:[{n:"nonce",t:"uint"}]},
+    {fn:"burnRequests", role:null, method:"burnRequests", kind:"read", args:[{n:"nonce",t:"uint"}]},
+    {fn:"nextMintNonce", role:null, method:"nextMintNonce", kind:"read", args:[]},
+    {fn:"nextBurnNonce", role:null, method:"nextBurnNonce", kind:"read", args:[]},
+  ]},
+  { name:"CashVaultTimelock (per-Vault)", key:"CashVaultTimelock", abiKey:"VaultTimelock", accent:"var(--cyan)", actions:[
+    {fn:"scheduleParamChange → changeId", role:"this Vault's Owner or Curator", method:"scheduleParamChange", kind:"tx",
+      args:[{n:"target",t:"address",def:"cashVault"},{n:"data (0x calldata)",t:"bytes"}],
+      note:"target+selector must be whitelisted for the caller's class; Owner-class and Curator-class lists are separate"},
+    {fn:"executeParamChange", role:null, method:"executeParamChange", kind:"tx", args:[{n:"changeId",t:"bytes32raw"}],
+      note:"permissionless — any Relayer, after delay and before the 7-day execution window closes"},
+    {fn:"cancelParamChange", role:"this Vault's Owner, Guardian, or the proposer", method:"cancelParamChange", kind:"tx",
+      args:[{n:"changeId",t:"bytes32raw"}]},
+    {fn:"setDelay", role:"Timelock self-call only", method:"setDelay", kind:"tx",
+      args:[{n:"seconds (1h–30d)",t:"uint",def:"172800"}],
+      note:"schedule it against the Timelock itself — a direct call reverts NotSelf"},
+    {fn:"setAllowedAction", role:"Owner while CONFIGURING, else Timelock self-call", method:"setAllowedAction", kind:"tx",
+      args:[{n:"target",t:"address"},{n:"selector (0x12345678)",t:"selector"},{n:"class",t:"actionClass",def:"CURATOR"},
+            {n:"allowed",t:"bool",def:"true"}]},
+    {fn:"vault", role:null, method:"vault", kind:"read", args:[], note:"immutable — a Timelock can never be rebound"},
+    {fn:"delay", role:null, method:"delay", kind:"read", args:[]},
+    {fn:"changeNonce", role:null, method:"changeNonce", kind:"read", args:[]},
+    {fn:"pendingChanges", role:null, method:"pendingChanges", kind:"read", args:[{n:"changeId",t:"bytes32raw"}]},
+    {fn:"isActionAllowed", role:null, method:"isActionAllowed", kind:"read",
+      args:[{n:"target",t:"address",def:"cashVault"},{n:"selector",t:"selector"},{n:"class",t:"actionClass",def:"CURATOR"}]},
+  ]},
+  { name:"PoRRegistry", key:"PoRRegistry", accent:"var(--por)", actions:[
+    {fn:"publishReserveProof", role:"asset owner or its Proof Publisher", method:"publishReserveProof", kind:"tx",
+      args:[{n:"assetId",t:"uint"},{n:"documentHash (text→keccak)",t:"hash"},{n:"uri",t:"str"}],
+      note:"append-only; assetId must exist and be active. No global DATA_PROVIDER_ROLE"},
+    {fn:"setProofPublisher", role:"asset owner", method:"setProofPublisher", kind:"tx",
+      args:[{n:"assetId",t:"uint"},{n:"publisher",t:"address"}], note:"optional delegate, per assetId"},
+    {fn:"proofPublisherOf", role:null, method:"proofPublisherOf", kind:"read", args:[{n:"assetId",t:"uint"}]},
+    {fn:"getLatestProof", role:null, method:"getLatestProof", kind:"read", args:[{n:"assetId",t:"uint"}]},
+    {fn:"getProof(assetId, index)", role:null, method:"getProof", kind:"read",
+      args:[{n:"assetId",t:"uint"},{n:"index",t:"uint"}]},
+    {fn:"getProofCount", role:null, method:"getProofCount", kind:"read", args:[{n:"assetId",t:"uint"}]},
+  ]},
+  { name:"ReservePSM", key:"ReservePSM", accent:"var(--psm)", actions:[
+    {fn:"deployWrappedToken", role:null, method:"deployWrappedToken", kind:"tx",
+      args:[{n:"assetId",t:"uint"},{n:"mode",t:"assetMode",def:"TOKEN_CUSTODY"},
+            {n:"underlyingToken (0x0 for DOCUMENT_PROOF)",t:"address"},{n:"name",t:"str"},{n:"symbol",t:"str"},
+            {n:"decimals",t:"uint",def:"18"},{n:"allowPartialUnwrap",t:"bool",def:"true"}],
+      note:"permissionless — the first caller to configure a PSM assetId becomes its Wrapper Controller"},
+    {fn:"setAuthorizedSigner", role:"this assetId's Wrapper Controller", method:"setAuthorizedSigner", kind:"tx",
+      args:[{n:"assetId",t:"uint"},{n:"signer",t:"address"}], note:"DOCUMENT_PROOF mode only"},
+    {fn:"pauseAsset", role:"this assetId's Wrapper Controller", method:"pauseAsset", kind:"tx", args:[{n:"assetId",t:"uint"}]},
+    {fn:"unpauseAsset", role:"this assetId's Wrapper Controller", method:"unpauseAsset", kind:"tx", args:[{n:"assetId",t:"uint"}]},
+    {fn:"pause (whole module)", role:"GOVERNOR", method:"pause", kind:"tx", args:[],
+      note:"Governor's only PSM power — it cannot touch a single asset's signer, mode, underlying or pause state"},
+    {fn:"unpause (whole module)", role:"GOVERNOR", method:"unpause", kind:"tx", args:[]},
+    {fn:"wrap", role:null, method:"wrap", kind:"tx",
+      args:[{n:"assetId",t:"uint"},{n:"amount",t:"uint"},{n:"to",t:"address"}],
+      note:"TOKEN_CUSTODY only; permissionless. Approve the underlying token to the PSM first"},
+    {fn:"unwrap", role:"WrappedAsset holder", method:"unwrap", kind:"tx",
+      args:[{n:"assetId",t:"uint"},{n:"amount",t:"uint"},{n:"to",t:"address"}]},
+    {fn:"mintWithAuthorization", role:null, method:"mintWithAuthorization", kind:"tx",
+      args:[{n:"assetId",t:"uint"},{n:"amount",t:"uint"},{n:"to",t:"address"},{n:"nonce",t:"uint"},
+            {n:"expiry",t:"uint"},{n:"signature",t:"bytes"},{n:"documentId",t:"hash"}],
+      note:"DOCUMENT_PROOF only; any Relayer may submit — safety comes from the signature, nonce, expiry and chainId"},
+    {fn:"controllerOf", role:null, method:"controllerOf", kind:"read", args:[{n:"assetId",t:"uint"}]},
+    {fn:"wrappedTokenOf", role:null, method:"wrappedTokenOf", kind:"read", args:[{n:"assetId",t:"uint"}]},
+    {fn:"assetModeOf", role:null, method:"assetModeOf", kind:"read", args:[{n:"assetId",t:"uint"}]},
+    {fn:"assetConfig", role:null, method:"assetConfig", kind:"read", args:[{n:"assetId",t:"uint"}]},
+    {fn:"globalPaused", role:null, method:"globalPaused", kind:"read", args:[]},
+  ]},
+  { name:"Queue", key:"Queue", accent:"var(--que)", actions:[
+    {fn:"dequeue", role:"the target Vault's own Settlement contract", method:"dequeue", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"queueType",t:"queueType",def:"REDEEM"},
+            {n:"requestIds (comma-sep)",t:"uintlist"}],
+      note:"FIFO order enforced; a human Settlement Operator signs but never calls this directly"},
+    {fn:"peek (head slot)", role:null, method:"peek", kind:"read",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"queueType",t:"queueType",def:"REDEEM"}]},
+    {fn:"depth", role:null, method:"depth", kind:"read",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"queueType",t:"queueType",def:"REDEEM"}]},
+    {fn:"isInQueue", role:null, method:"isInQueue", kind:"read",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"queueType",t:"queueType",def:"REDEEM"},{n:"requestId",t:"uint"}]},
+    {fn:"queueHead", role:null, method:"queueHead", kind:"read",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"queueType",t:"queueType",def:"REDEEM"}]},
+    {fn:"queueTail", role:null, method:"queueTail", kind:"read",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"queueType",t:"queueType",def:"REDEEM"}]},
+  ]},
+  { name:"RevenuePool", key:"RevenuePool", accent:"var(--rev)", actions:[
+    {fn:"addAuthorizedSource", role:"GOVERNOR", method:"addAuthorizedSource", kind:"tx",
+      args:[{n:"source",t:"address"}], note:"whitelist a contract that may deposit fees (e.g. UnifiedPool)"},
+    {fn:"removeAuthorizedSource", role:"GOVERNOR", method:"removeAuthorizedSource", kind:"tx",
+      args:[{n:"source",t:"address"}]},
+    {fn:"withdraw", role:"GOVERNOR", method:"withdraw", kind:"tx",
+      args:[{n:"recipient",t:"address"},{n:"amount",t:"uint"}], note:"USDT only — sweeps this pool's USDT balance"},
+    {fn:"withdrawToken", role:"GOVERNOR", method:"withdrawToken", kind:"tx",
+      args:[{n:"token",t:"address"},{n:"to",t:"address"},{n:"amount",t:"uint"}],
+      note:"generic ERC-20 sweep — e.g. Vault Shares minted here as the protocol's share of a performance fee (see CashVault.setProtocolFeeConfig); never touches totalFeesReceived"},
+    {fn:"withdrawNative", role:"GOVERNOR", method:"withdrawNative", kind:"tx",
+      args:[{n:"to",t:"address"},{n:"amount",t:"uint"}],
+      note:"sweeps this pool's native-currency (BNB/ETH) balance — e.g. Native-kind ProtocolFeeConfig creation fees"},
+    {fn:"authorizedSources", role:null, method:"authorizedSources", kind:"read", args:[{n:"source",t:"address"}]},
+    {fn:"totalFeesReceived", role:null, method:"totalFeesReceived", kind:"read", args:[]},
+  ]},
+  { name:"UnifiedPool", key:"UnifiedPool", accent:"var(--uni)", actions:[
+    {fn:"repayInterest", role:null, method:"repayInterest", kind:"tx", args:[{n:"amount",t:"uint"}],
+      note:"permissionless — anyone may pay in. The payer does NOT pick a Vault; funds land in unattributedInterest"},
+    {fn:"repayPrincipal", role:null, method:"repayPrincipal", kind:"tx", args:[{n:"amount",t:"uint"}],
+      note:"permissionless; lands in unattributedPrincipal"},
+    {fn:"attributeInterest", role:"that Vault's Settlement Operator (Vault + Settlement whitelisted)", method:"attributeInterest", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"amount",t:"uint"}],
+      note:"assigns already-deposited interest to a Vault — attribution is a settlement decision, not the payer's. Since 审计反馈 V3 #1/#2 the vault must be on setVaultWhitelisted AND its current settlement() on setSettlementWhitelisted"},
+    {fn:"attributePrincipal", role:"that Vault's Settlement Operator (Vault + Settlement whitelisted)", method:"attributePrincipal", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"amount",t:"uint"}],
+      note:"same double whitelist gate — this is what stops a permissionlessly-created Vault inflating its own pending, totalAssets() and share price out of the open inflow pool"},
+    {fn:"distribute", role:"the target Vault's own Settlement contract", method:"distribute", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"amount",t:"uint"}], note:"moves USDT from pool to vault"},
+    {fn:"operatorTransfer", role:"GOVERNOR", method:"operatorTransfer", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"recipient",t:"address"},{n:"amount",t:"uint"},
+            {n:"referenceId",t:"hash"}],
+      note:"GOVERNOR-only since 审计反馈 V3 #1 (was that Vault's Settlement Operator). This and the RevenuePool twin are the only paths that move cash out without a matching ledger entry, so a stolen Operator key must not reach them. `vault` is now only the accounting reference the transfer is booked against"},
+    {fn:"operatorTransferToRevenuePool", role:"GOVERNOR", method:"operatorTransferToRevenuePool", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"revenuePool",t:"address"},{n:"amount",t:"uint"},
+            {n:"referenceId",t:"hash"}]},
+    {fn:"receiveVaultPrincipal", role:"the calling Vault itself", method:"receiveVaultPrincipal", kind:"tx",
+      args:[{n:"amount",t:"uint"}],
+      note:"call this FROM the Vault contract (e.g. via CashVault.returnPrincipalToPool), not directly — msg.sender is both the USDT source and the vault credited; caller must be StateManager-registered, configured+active, and Governor-whitelisted in this Pool"},
+    {fn:"setVaultWhitelisted", role:"GOVERNOR", method:"setVaultWhitelisted", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"allowed",t:"bool"}],
+      note:"the protocol admitting a Vault to the shared pool. VaultFactory.deployVault stays permissionless — building from the standard contracts is not an endorsement — so governance controls pool admission instead of who may create a Vault (审计反馈 V3 #1/#2)"},
+    {fn:"setSettlementWhitelisted", role:"GOVERNOR", method:"setSettlementWhitelisted", kind:"tx",
+      args:[{n:"settlement",t:"address"},{n:"allowed",t:"bool"}],
+      note:"trusted Settlement contracts; several may be listed at once so a new implementation rolls out alongside the old. A whitelisted Vault can re-point settlement() at any time, which is why attribution/distribution check both lists"},
+    {fn:"vaultWhitelisted", role:null, method:"vaultWhitelisted", kind:"read", args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"settlementWhitelisted", role:null, method:"settlementWhitelisted", kind:"read", args:[{n:"settlement",t:"address"}]},
+    {fn:"addVault", role:"that Vault's Owner", method:"addVault", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"}],
+      note:"Tranche classification was removed 2026-08-25 — the pool keys on the vault address alone. Sharing a Pool never means sharing roles or liabilities. Product type now lives in product params / Indexer / front-end metadata"},
+    {fn:"deactivateVault", role:"that Vault's Owner", method:"deactivateVault", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"reactivateVault", role:"that Vault's Owner", method:"reactivateVault", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"pending (per-vault balance)", role:null, method:"pending", kind:"read", args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"availableToDistribute", role:null, method:"availableToDistribute", kind:"read", args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"unattributedInterest", role:null, method:"unattributedInterest", kind:"read", args:[]},
+    {fn:"unattributedPrincipal", role:null, method:"unattributedPrincipal", kind:"read", args:[]},
+    {fn:"totalPending", role:null, method:"totalPending", kind:"read", args:[]},
+    {fn:"writeDownPending", role:"that Vault's VaultTimelock", method:"writeDownPending", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"amount",t:"usdt"},{n:"referenceId",t:"hash"}],
+      note:"recognises a PERMANENT loss on pool-managed assets. pending[vault] is a claim on managed assets, not on the pool's instant cash — an operatorTransfer into an external position does NOT reduce it — so without this an unrecoverable investment stays in the vault's NAV forever"},
+  ]},
+  { name:"StubStateManager (demo pause)", key:"StubStateManager", accent:"var(--grd)", actions:[
+    {fn:"pauseModule", role:"GUARDIAN", method:"pauseModule", kind:"tx", args:[{n:"module",t:"module",def:"TOKENIZATION"}],
+      note:"blocks mint/burn or NAV while paused"},
+    {fn:"unpauseModule", role:"GOVERNOR", method:"unpauseModule", kind:"tx", args:[{n:"module",t:"module",def:"TOKENIZATION"}]},
+    {fn:"modulePaused", role:null, method:"modulePaused", kind:"read", args:[{n:"module",t:"module",def:"TOKENIZATION"}]},
+  ]},
+  { name:"StateManager (W3)", key:"StateManager", accent:"var(--grd)", actions:[
+    {fn:"registerVault", role:"the official VaultFactory only", method:"registerVault", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"}],
+      note:"a direct call reverts NotVaultFactory — VaultFactory.deployVault registers each Vault; the initial state is fixed at CONFIGURING/ACCEPTING and is no longer a parameter"},
+    {fn:"setProductParams", role:"that Vault's Curator", method:"setProductParams", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"},
+            {n:"10 uints, comma-sep: subscriptionStart,subscriptionEnd,walletSubscriptionCap,minRaiseAmount,subscriptionCapShare,cycleDuration,maturityTimestamp,claimingStart,claimingEnd,feeParams",t:"uintlist"}],
+      note:"only while product == CONFIGURING; 2nd arg is passed as the ProductParams tuple. walletSubscriptionCap and minRaiseAmount are in settlement-token base units (10**usdt.decimals() per token — see the Settlement token row above); subscriptionCapShare is the vault's 募集上限 in SHARE units (always 18-dec), 0 = no cap — it is written straight into the Vault, so there is no separate setup call. Changing it later goes through that Vault's Timelock (setSubscriptionCapShare); read the live value from the Vault's subscriptionCapShare()."},
+    {fn:"openSubscription", role:"that Vault's Keeper", method:"openSubscription", kind:"tx", args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"finalizeSubscription", role:"that Vault's Keeper", method:"finalizeSubscription", kind:"tx", args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"startCycleCalculation", role:"that Vault's Keeper", method:"startCycleCalculation", kind:"tx", args:[{n:"vault",t:"address",def:"cashVault"}],
+      note:"due when cycleDuration has elapsed, OR as soon as maturityTimestamp is reached. Past maturity this ALSO moves the product OPERATING → SETTLING in the same transaction and flags the cycle FINAL — the final cycle runs from SETTLING/CALCULATING. Its completeCycle then moves SETTLING → MATURING atomically, so there is no separate Keeper transition into either"},
+    {fn:"isFinalCycle", role:null, method:"isFinalCycle", kind:"read", args:[{n:"vault",t:"address",def:"cashVault"}],
+      note:"true while the FINAL cycle is running (product SETTLING, cycle CALCULATING)"},
+    {fn:"enterClaiming", role:"that Vault's Keeper", method:"enterClaiming", kind:"tx", args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"closeProduct", role:"that Vault's Keeper", method:"closeProduct", kind:"tx", args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"completeCycle", role:"that Vault's own Settlement contract", method:"completeCycle", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"pause", role:"that Vault's Guardian", method:"pause", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"reason",t:"pauseReason",def:"PAUSED_BY_GUARDIAN"}]},
+    {fn:"unpause", role:"that Vault's Owner", method:"unpause", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"}], note:"the Guardian that paused cannot un-pause"},
+    {fn:"pauseModule", role:"GOVERNOR", method:"pauseModule", kind:"tx", args:[{n:"module",t:"module",def:"TOKENIZATION"}],
+      note:"protocol module-level emergency stop — never a single Vault"},
+    {fn:"unpauseModule", role:"GOVERNOR", method:"unpauseModule", kind:"tx", args:[{n:"module",t:"module",def:"TOKENIZATION"}]},
+    {fn:"getState", role:null, method:"getState", kind:"read", args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"getParams", role:null, method:"getParams", kind:"read", args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"totalSubscribed", role:null, method:"totalSubscribed", kind:"read", args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"isVaultRegistered", role:null, method:"isVaultRegistered", kind:"read", args:[{n:"vault",t:"address",def:"cashVault"}]},
+  ]},
+  { name:"CashVault (EarnVault, 7-day cycle)", key:"CashVault", abiKey:"EarnVault", accent:"var(--iss)", actions:[
+    {fn:"requestDeposit → requestId", role:"investor", method:"requestDeposit", kind:"tx",
+      args:[{n:"assets",t:"usdt",def:"1000"},{n:"owner",t:"address"}],
+      note:"approve USDT to this vault first"},
+    {fn:"claimDeposit", role:"owner/operator", method:"claimDeposit", kind:"tx",
+      args:[{n:"requestId",t:"uint"},{n:"receiver",t:"address"}]},
+    {fn:"requestRedeem → requestId", role:"owner/operator", method:"requestRedeem", kind:"tx",
+      args:[{n:"shares",t:"uint"},{n:"owner",t:"address"}], note:"approve share allowance to vault first if operator"},
+    {fn:"cancelRequest", role:"owner/operator", method:"cancelRequest", kind:"tx", args:[{n:"requestId",t:"uint"}],
+      note:"the owner (or an approved operator) withdrawing their own still-open request. Blocked in exactly two phases — an ordinary cycle being computed (cycle != ACCEPTING) and the final settlement window (product == SETTLING); open everywhere else, including MATURING / CLAIMING / CLOSED. A partially-filled redeem returns only its unfilled shares and stays claimable via claimRedeem for the part already settled"},
+    {fn:"claimRedeem", role:"owner/operator", method:"claimRedeem", kind:"tx",
+      args:[{n:"requestId",t:"uint"},{n:"receiver",t:"address"}]},
+    {fn:"claimRefund", role:null, method:"claimRefund", kind:"tx", args:[{n:"requestId",t:"uint"}],
+      note:"only when product == FUNDING_FAILED and request is REFUNDABLE"},
+    {fn:"markRefundable", role:"this Vault's Curator", method:"markRefundable", kind:"tx",
+      args:[{n:"requestIds (comma-sep)",t:"uintlist"}], note:"FUNDING_FAILED only"},
+    {fn:"snapshotSettlementPrice", role:"this Vault's own Settlement contract", method:"snapshotSettlementPrice", kind:"tx",
+      args:[{n:"cycleNumber",t:"uint",def:"0"}]},
+    {fn:"settle", role:"this Vault's own Settlement contract", method:"settle", kind:"tx", args:[],
+      note:"a human Settlement Operator signs the batch; only the Settlement contract calls this. Signature changed to settle(uint256 cycleNumber, RequestSettlement[] deposits, RequestSettlement[] redeems, uint256 poolDistributedAssets) — each RequestSettlement is (requestId, settleAmount), allowing a request to be settled for less than its full remaining amount. Nested struct arrays aren't exposed in the form UI (same precedent as VaultFactory.deployVault) — assembled + signed off-chain by the Settlement Operator"},
+    {fn:"deposit (sync, LiquidityBridge only)", role:"LiquidityBridge", method:"deposit", kind:"tx",
+      args:[{n:"assets",t:"uint"},{n:"receiver",t:"address"}]},
+    {fn:"setGate", role:"Owner direct while CONFIGURING, else via VaultTimelock", method:"setGate", kind:"tx",
+      args:[{n:"gate (0x0=none)",t:"address"}]},
+    {fn:"setSettlement", role:"Owner direct while CONFIGURING, else via VaultTimelock", method:"setSettlement", kind:"tx",
+      args:[{n:"settlement",t:"address",def:"settlement"}], note:"rejected mid-cycle (CALCULATING/FULFILLING)"},
+    {fn:"setUnifiedPool", role:"Owner direct while CONFIGURING, else via VaultTimelock", method:"setUnifiedPool", kind:"tx",
+      args:[{n:"pool",t:"address"}]},
+    {fn:"addAdapter", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"addAdapter", kind:"tx",
+      args:[{n:"adapter",t:"address"}],
+      note:"adapter must be bound to this Vault, not already added, under MAX_ADAPTERS, and return realAssets() without reverting; admission is decided solely by this Vault's Curator"},
+    {fn:"removeAdapter", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"removeAdapter", kind:"tx",
+      args:[{n:"adapter",t:"address"}], note:"realAssets() must be 0"},
+    {fn:"setPerformanceFeeBps", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"setPerformanceFeeBps", kind:"tx",
+      args:[{n:"bps (max 10000)",t:"uint",def:"200"}], note:"0 = no fee, 10000 = 100% of chargeable profit"},
+    {fn:"setPerformanceFeeRecipient", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"setPerformanceFeeRecipient", kind:"tx",
+      args:[{n:"recipient",t:"address"}]},
+    {fn:"setProtocolFeeConfig", role:"GOVERNOR", method:"setProtocolFeeConfig", kind:"tx",
+      args:[{n:"revenuePool",t:"address"},{n:"protocolFeeShareBps (max 10000)",t:"uint",def:"3000"}],
+      note:"protocol's share of the total performance fee; the remainder mints to performanceFeeRecipient. Only affects cycles not yet snapshotted"},
+    {fn:"returnPrincipalToPool", role:"this Vault's Settlement Operator", method:"returnPrincipalToPool", kind:"tx",
+      args:[{n:"amount",t:"uint"}],
+      note:"pushes this Vault's own free USDT into UnifiedPool.receiveVaultPrincipal — requires unifiedPool set and amount <= freeVaultUSDT()"},
+    {fn:"—— Vault-local roles (IVaultRoles) ——", role:null, method:"owner", kind:"read", args:[],
+      note:"reads owner(). Every operating role below is appointed by THIS Vault's Owner and applies to THIS Vault only — the Owner does not implicitly hold any of them"},
+    {fn:"setCurator", role:"this Vault's Owner", method:"setCurator", kind:"tx", args:[{n:"account",t:"address"}]},
+    {fn:"setGuardian", role:"this Vault's Owner", method:"setGuardian", kind:"tx", args:[{n:"account",t:"address"}]},
+    {fn:"setAllocator", role:"this Vault's Owner", method:"setAllocator", kind:"tx", args:[{n:"account",t:"address"}]},
+    {fn:"setKeeper", role:"this Vault's Owner", method:"setKeeper", kind:"tx",
+      args:[{n:"account",t:"address"},{n:"approved",t:"bool",def:"true"}],
+      note:"multiple Keepers allowed; the Owner is NOT a Keeper unless granted here"},
+    {fn:"transferOwnership", role:"this Vault's Owner", method:"transferOwnership", kind:"tx",
+      args:[{n:"newOwner",t:"address"}], note:"this Vault only — no effect on any other Vault"},
+    {fn:"curator / guardian / allocator", role:null, method:"curator", kind:"read", args:[]},
+    {fn:"guardian", role:null, method:"guardian", kind:"read", args:[]},
+    {fn:"allocator", role:null, method:"allocator", kind:"read", args:[]},
+    {fn:"isKeeper", role:null, method:"isKeeper", kind:"read", args:[{n:"account",t:"address"}]},
+    {fn:"vaultTimelock", role:null, method:"vaultTimelock", kind:"read", args:[],
+      note:"bound by VaultFactory at deploy; never rebindable. Owner-class actions (setSettlement/setUnifiedPool/setGate/writeDownInsolvency) and Curator-class actions (fees, Adapters, staleness, data provider) route through it once the Vault leaves CONFIGURING. writeDownInsolvency now takes a single uint256[] of settled-redeem ids (strictly ascending, and it must list EVERY unclaimed one) and has no form UI — the haircut ratio is computed on-chain and cannot be supplied"},
+    {fn:"claimFinal", role:"share holder (or their ERC-7540 operator)", method:"claimFinal", kind:"tx",
+      args:[{n:"shares (18-dec)",t:"uint"},{n:"owner",t:"address"},{n:"receiver",t:"address"}],
+      note:"the exit for shares never queued for redemption: burns them at the frozen final price and pays USDT. Open from CLAIMING onward and STILL open after CLOSED — CLOSED ends the product's business, not the holder's right to be paid. Partial claims allowed"},
+    {fn:"finalSettlementPrice", role:null, method:"finalSettlementPrice", kind:"read", args:[],
+      note:"the one price every remaining share redeems at; 0 until the final cycle's snapshot"},
+    {fn:"subscriptionCapShare", role:null, method:"subscriptionCapShare", kind:"read", args:[],
+      note:"the live 募集上限 in SHARE units (18-dec); 0 = no cap. This is the authoritative value settlement checks against — always read it here rather than from the ProductParams that seeded it, so a later Timelock change is reflected"},
+    {fn:"setSubscriptionCapShare", role:"that Vault's VaultTimelock", method:"setSubscriptionCapShare", kind:"tx",
+      args:[{n:"capShare (18-dec)",t:"uint",def:"0"}],
+      note:"the INITIAL cap is set by the Curator through StateManager.setProductParams while CONFIGURING; every later change is a Timelock action, scheduled and executed through that Vault's own VaultTimelock"},
+    {fn:"totalAssets", role:null, method:"totalAssets", kind:"read", args:[]},
+    {fn:"convertToShares", role:null, method:"convertToShares", kind:"read", args:[{n:"assets",t:"uint"}]},
+    {fn:"convertToAssets", role:null, method:"convertToAssets", kind:"read", args:[{n:"shares",t:"uint"}]},
+    {fn:"balanceOf", role:null, method:"balanceOf", kind:"read", args:[{n:"account",t:"address"}]},
+    {fn:"revenuePool", role:null, method:"revenuePool", kind:"read", args:[]},
+    {fn:"protocolFeeShareBps", role:null, method:"protocolFeeShareBps", kind:"read", args:[]},
+  ]},
+  { name:"NoteVault (EarnVault, 365-day cycle)", key:"NoteVault", abiKey:"EarnVault", accent:"var(--que)", actions:[
+    {fn:"requestDeposit → requestId", role:"investor", method:"requestDeposit", kind:"tx",
+      args:[{n:"assets",t:"usdt",def:"1000"},{n:"owner",t:"address"}]},
+    {fn:"claimDeposit", role:"owner/operator", method:"claimDeposit", kind:"tx",
+      args:[{n:"requestId",t:"uint"},{n:"receiver",t:"address"}]},
+    {fn:"requestRedeem → requestId", role:"owner/operator", method:"requestRedeem", kind:"tx",
+      args:[{n:"shares",t:"uint"},{n:"owner",t:"address"}]},
+    {fn:"cancelRequest", role:"owner/operator", method:"cancelRequest", kind:"tx", args:[{n:"requestId",t:"uint"}],
+      note:"the owner (or an approved operator) withdrawing their own still-open request. Blocked in exactly two phases — an ordinary cycle being computed (cycle != ACCEPTING) and the final settlement window (product == SETTLING); open everywhere else, including MATURING / CLAIMING / CLOSED. A partially-filled redeem returns only its unfilled shares and stays claimable via claimRedeem for the part already settled"},
+    {fn:"claimRedeem", role:"owner/operator", method:"claimRedeem", kind:"tx",
+      args:[{n:"requestId",t:"uint"},{n:"receiver",t:"address"}]},
+    {fn:"claimRefund", role:null, method:"claimRefund", kind:"tx", args:[{n:"requestId",t:"uint"}]},
+    {fn:"settle", role:"this Vault's own Settlement contract", method:"settle", kind:"tx", args:[],
+      note:"Signature changed to settle(uint256 cycleNumber, RequestSettlement[] deposits, RequestSettlement[] redeems, uint256 poolDistributedAssets) — each RequestSettlement is (requestId, settleAmount), allowing a request to be settled for less than its full remaining amount. Nested struct arrays aren't exposed in the form UI (same precedent as VaultFactory.deployVault) — assembled + signed off-chain by the Settlement Operator"},
+    {fn:"setGate", role:"Owner direct while CONFIGURING, else via VaultTimelock", method:"setGate", kind:"tx",
+      args:[{n:"gate (0x0=none)",t:"address"}]},
+    {fn:"setSettlement", role:"Owner direct while CONFIGURING, else via VaultTimelock", method:"setSettlement", kind:"tx",
+      args:[{n:"settlement",t:"address",def:"settlement"}], note:"rejected mid-cycle (CALCULATING/FULFILLING)"},
+    {fn:"setUnifiedPool", role:"Owner direct while CONFIGURING, else via VaultTimelock", method:"setUnifiedPool", kind:"tx",
+      args:[{n:"pool",t:"address"}]},
+    {fn:"addAdapter", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"addAdapter", kind:"tx",
+      args:[{n:"adapter",t:"address"}],
+      note:"adapter must be bound to this Vault, not already added, under MAX_ADAPTERS, and return realAssets() without reverting; admission is decided solely by this Vault's Curator"},
+    {fn:"removeAdapter", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"removeAdapter", kind:"tx",
+      args:[{n:"adapter",t:"address"}], note:"realAssets() must be 0"},
+    {fn:"setPerformanceFeeBps", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"setPerformanceFeeBps", kind:"tx",
+      args:[{n:"bps (max 10000)",t:"uint",def:"200"}], note:"0 = no fee, 10000 = 100% of chargeable profit"},
+    {fn:"setPerformanceFeeRecipient", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"setPerformanceFeeRecipient", kind:"tx",
+      args:[{n:"recipient",t:"address"}]},
+    {fn:"setProtocolFeeConfig", role:"GOVERNOR", method:"setProtocolFeeConfig", kind:"tx",
+      args:[{n:"revenuePool",t:"address"},{n:"protocolFeeShareBps (max 10000)",t:"uint",def:"3000"}],
+      note:"protocol's share of the total performance fee; the remainder mints to performanceFeeRecipient. Only affects cycles not yet snapshotted"},
+    {fn:"returnPrincipalToPool", role:"this Vault's Settlement Operator", method:"returnPrincipalToPool", kind:"tx",
+      args:[{n:"amount",t:"uint"}],
+      note:"pushes this Vault's own free USDT into UnifiedPool.receiveVaultPrincipal — requires unifiedPool set and amount <= freeVaultUSDT()"},
+    {fn:"markRefundable", role:"this Vault's Curator", method:"markRefundable", kind:"tx",
+      args:[{n:"requestIds (comma-sep)",t:"uintlist"}], note:"FUNDING_FAILED only"},
+    {fn:"—— Vault-local roles (IVaultRoles) ——", role:null, method:"owner", kind:"read", args:[],
+      note:"reads owner(). Every operating role below is appointed by THIS Vault's Owner and applies to THIS Vault only — the Owner does not implicitly hold any of them"},
+    {fn:"setCurator", role:"this Vault's Owner", method:"setCurator", kind:"tx", args:[{n:"account",t:"address"}]},
+    {fn:"setGuardian", role:"this Vault's Owner", method:"setGuardian", kind:"tx", args:[{n:"account",t:"address"}]},
+    {fn:"setAllocator", role:"this Vault's Owner", method:"setAllocator", kind:"tx", args:[{n:"account",t:"address"}]},
+    {fn:"setKeeper", role:"this Vault's Owner", method:"setKeeper", kind:"tx",
+      args:[{n:"account",t:"address"},{n:"approved",t:"bool",def:"true"}],
+      note:"multiple Keepers allowed; the Owner is NOT a Keeper unless granted here"},
+    {fn:"transferOwnership", role:"this Vault's Owner", method:"transferOwnership", kind:"tx",
+      args:[{n:"newOwner",t:"address"}], note:"this Vault only — no effect on any other Vault"},
+    {fn:"curator / guardian / allocator", role:null, method:"curator", kind:"read", args:[]},
+    {fn:"guardian", role:null, method:"guardian", kind:"read", args:[]},
+    {fn:"allocator", role:null, method:"allocator", kind:"read", args:[]},
+    {fn:"isKeeper", role:null, method:"isKeeper", kind:"read", args:[{n:"account",t:"address"}]},
+    {fn:"vaultTimelock", role:null, method:"vaultTimelock", kind:"read", args:[],
+      note:"bound by VaultFactory at deploy; never rebindable. Owner-class actions (setSettlement/setUnifiedPool/setGate/writeDownInsolvency) and Curator-class actions (fees, Adapters, staleness, data provider) route through it once the Vault leaves CONFIGURING. writeDownInsolvency now takes a single uint256[] of settled-redeem ids (strictly ascending, and it must list EVERY unclaimed one) and has no form UI — the haircut ratio is computed on-chain and cannot be supplied"},
+    {fn:"claimFinal", role:"share holder (or their ERC-7540 operator)", method:"claimFinal", kind:"tx",
+      args:[{n:"shares (18-dec)",t:"uint"},{n:"owner",t:"address"},{n:"receiver",t:"address"}],
+      note:"the exit for shares never queued for redemption: burns them at the frozen final price and pays USDT. Open from CLAIMING onward and STILL open after CLOSED — CLOSED ends the product's business, not the holder's right to be paid. Partial claims allowed"},
+    {fn:"finalSettlementPrice", role:null, method:"finalSettlementPrice", kind:"read", args:[],
+      note:"the one price every remaining share redeems at; 0 until the final cycle's snapshot"},
+    {fn:"subscriptionCapShare", role:null, method:"subscriptionCapShare", kind:"read", args:[],
+      note:"the live 募集上限 in SHARE units (18-dec); 0 = no cap. This is the authoritative value settlement checks against — always read it here rather than from the ProductParams that seeded it, so a later Timelock change is reflected"},
+    {fn:"setSubscriptionCapShare", role:"that Vault's VaultTimelock", method:"setSubscriptionCapShare", kind:"tx",
+      args:[{n:"capShare (18-dec)",t:"uint",def:"0"}],
+      note:"the INITIAL cap is set by the Curator through StateManager.setProductParams while CONFIGURING; every later change is a Timelock action, scheduled and executed through that Vault's own VaultTimelock"},
+    {fn:"totalAssets", role:null, method:"totalAssets", kind:"read", args:[]},
+    {fn:"balanceOf", role:null, method:"balanceOf", kind:"read", args:[{n:"account",t:"address"}]},
+    {fn:"revenuePool", role:null, method:"revenuePool", kind:"read", args:[]},
+    {fn:"protocolFeeShareBps", role:null, method:"protocolFeeShareBps", kind:"read", args:[]},
+  ]},
+  { name:"LPVault (LiquidityEarnVault — repeating cyclical, no shares minted)", key:"LPVault", abiKey:"LiquidityEarnVault", accent:"var(--uni)", actions:[
+    {fn:"requestDeposit → requestId", role:"investor", method:"requestDeposit", kind:"tx",
+      args:[{n:"assets",t:"usdt",def:"1000"},{n:"owner",t:"address"}],
+      note:"joins this cycle's FIFO deposit queue; no shares are minted for this vault, ever"},
+    {fn:"cancelRequest", role:"owner/operator", method:"cancelRequest", kind:"tx", args:[{n:"requestId",t:"uint"}],
+      note:"the owner (or an approved operator) withdrawing their own still-open request. Blocked in exactly two phases — an ordinary cycle being computed (cycle != ACCEPTING) and the final settlement window (product == SETTLING); open everywhere else, including MATURING / CLAIMING / CLOSED. A partially-filled redeem returns only its unfilled shares and stays claimable via claimRedeem for the part already settled"},
+    {fn:"claimRefund", role:null, method:"claimRefund", kind:"tx", args:[{n:"requestId",t:"uint"}],
+      note:"only for a REFUNDABLE request — reachable via FUNDING_FAILED markRefundable, or via Curator evictDepositRequest"},
+    {fn:"evictDepositRequest", role:"this Vault's Curator", method:"evictDepositRequest", kind:"tx",
+      args:[{n:"requestId",t:"uint"}],
+      note:"unblocks the FIFO queue if a PENDING request's owner cannot receive USDT — moves it to REFUNDABLE and tombstones it out of Queue so later requests can settle. Only PENDING requests are evictable"},
+    {fn:"settle", role:"this Vault's own Settlement contract", method:"settle", kind:"tx", args:[],
+      note:"single transaction: bridges the batch's combined USDT → CashVault once, then splits the resulting Cash Tokens + bonus USDT pro-rata across the batch, last request absorbs the rounding remainder. Reverts if redeems is nonempty (redemption is not supported) or the batch exceeds MAX_CYCLE_REQUESTS. Signature changed to settle(uint256 cycleNumber, RequestSettlement[] deposits, RequestSettlement[] redeems, uint256 poolDistributedAssets) — each RequestSettlement is (requestId, settleAmount). Nested struct arrays aren't exposed in the form UI (same precedent as VaultFactory.deployVault) — assembled + signed off-chain by the Settlement Operator"},
+    {fn:"setGate", role:"Owner direct while CONFIGURING, else via VaultTimelock", method:"setGate", kind:"tx",
+      args:[{n:"gate (0x0=none)",t:"address"}]},
+    {fn:"setSettlement", role:"Owner direct while CONFIGURING, else via VaultTimelock", method:"setSettlement", kind:"tx",
+      args:[{n:"settlement",t:"address",def:"settlement"}], note:"rejected mid-cycle (CALCULATING/FULFILLING)"},
+    {fn:"setUnifiedPool", role:"Owner direct while CONFIGURING, else via VaultTimelock", method:"setUnifiedPool", kind:"tx",
+      args:[{n:"pool",t:"address"}]},
+    {fn:"addAdapter", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"addAdapter", kind:"tx",
+      args:[{n:"adapter",t:"address"}],
+      note:"adapter must be bound to this Vault, not already added, under MAX_ADAPTERS, and return realAssets() without reverting; admission is decided solely by this Vault's Curator"},
+    {fn:"removeAdapter", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"removeAdapter", kind:"tx",
+      args:[{n:"adapter",t:"address"}], note:"realAssets() must be 0"},
+    {fn:"setPerformanceFeeBps", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"setPerformanceFeeBps", kind:"tx",
+      args:[{n:"bps (max 10000)",t:"uint",def:"200"}], note:"0 = no fee, 10000 = 100% of chargeable profit"},
+    {fn:"setPerformanceFeeRecipient", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"setPerformanceFeeRecipient", kind:"tx",
+      args:[{n:"recipient",t:"address"}]},
+    {fn:"setProtocolFeeConfig", role:"GOVERNOR", method:"setProtocolFeeConfig", kind:"tx",
+      args:[{n:"revenuePool",t:"address"},{n:"protocolFeeShareBps (max 10000)",t:"uint",def:"3000"}],
+      note:"protocol's share of the total performance fee; the remainder mints to performanceFeeRecipient. Only affects cycles not yet snapshotted"},
+    {fn:"returnPrincipalToPool", role:"this Vault's Settlement Operator", method:"returnPrincipalToPool", kind:"tx",
+      args:[{n:"amount",t:"uint"}],
+      note:"pushes this Vault's own free USDT into UnifiedPool.receiveVaultPrincipal — requires unifiedPool set and amount <= freeVaultUSDT()"},
+    {fn:"—— Vault-local roles (IVaultRoles) ——", role:null, method:"owner", kind:"read", args:[],
+      note:"reads owner(). Every operating role below is appointed by THIS Vault's Owner and applies to THIS Vault only — the Owner does not implicitly hold any of them"},
+    {fn:"setCurator", role:"this Vault's Owner", method:"setCurator", kind:"tx", args:[{n:"account",t:"address"}]},
+    {fn:"setGuardian", role:"this Vault's Owner", method:"setGuardian", kind:"tx", args:[{n:"account",t:"address"}]},
+    {fn:"setAllocator", role:"this Vault's Owner", method:"setAllocator", kind:"tx", args:[{n:"account",t:"address"}]},
+    {fn:"setKeeper", role:"this Vault's Owner", method:"setKeeper", kind:"tx",
+      args:[{n:"account",t:"address"},{n:"approved",t:"bool",def:"true"}],
+      note:"multiple Keepers allowed; the Owner is NOT a Keeper unless granted here"},
+    {fn:"transferOwnership", role:"this Vault's Owner", method:"transferOwnership", kind:"tx",
+      args:[{n:"newOwner",t:"address"}], note:"this Vault only — no effect on any other Vault"},
+    {fn:"curator / guardian / allocator", role:null, method:"curator", kind:"read", args:[]},
+    {fn:"guardian", role:null, method:"guardian", kind:"read", args:[]},
+    {fn:"allocator", role:null, method:"allocator", kind:"read", args:[]},
+    {fn:"isKeeper", role:null, method:"isKeeper", kind:"read", args:[{n:"account",t:"address"}]},
+    {fn:"vaultTimelock", role:null, method:"vaultTimelock", kind:"read", args:[],
+      note:"bound by VaultFactory at deploy; never rebindable. Owner-class actions (setSettlement/setUnifiedPool/setGate/writeDownInsolvency) and Curator-class actions (fees, Adapters, staleness, data provider) route through it once the Vault leaves CONFIGURING. writeDownInsolvency now takes a single uint256[] of settled-redeem ids (strictly ascending, and it must list EVERY unclaimed one) and has no form UI — the haircut ratio is computed on-chain and cannot be supplied"},
+    {fn:"liquidityBridge", role:null, method:"liquidityBridge", kind:"read", args:[]},
+    {fn:"cashVault", role:null, method:"cashVault", kind:"read", args:[]},
+    {fn:"totalAssets", role:null, method:"totalAssets", kind:"read", args:[]},
+    {fn:"balanceOf", role:null, method:"balanceOf", kind:"read", args:[{n:"account",t:"address"}],
+      note:"always 0 for every account — this vault never mints shares"},
+    {fn:"revenuePool", role:null, method:"revenuePool", kind:"read", args:[]},
+    {fn:"protocolFeeShareBps", role:null, method:"protocolFeeShareBps", kind:"read", args:[]},
+    {fn:"claimFinal", role:"share holder (or their ERC-7540 operator)", method:"claimFinal", kind:"tx",
+      args:[{n:"shares (18-dec)",t:"uint"},{n:"owner",t:"address"},{n:"receiver",t:"address"}],
+      note:"the exit for shares never queued for redemption: burns them at the frozen final price and pays USDT. Open from CLAIMING onward and STILL open after CLOSED — CLOSED ends the product's business, not the holder's right to be paid. Partial claims allowed"},
+    {fn:"finalSettlementPrice", role:null, method:"finalSettlementPrice", kind:"read", args:[],
+      note:"the one price every remaining share redeems at; 0 until the final cycle's snapshot"},
+    {fn:"subscriptionCapShare", role:null, method:"subscriptionCapShare", kind:"read", args:[],
+      note:"the live 募集上限 in SHARE units (18-dec); 0 = no cap. This is the authoritative value settlement checks against — always read it here rather than from the ProductParams that seeded it, so a later Timelock change is reflected"},
+    {fn:"setSubscriptionCapShare", role:"that Vault's VaultTimelock", method:"setSubscriptionCapShare", kind:"tx",
+      args:[{n:"capShare (18-dec)",t:"uint",def:"0"}],
+      note:"the INITIAL cap is set by the Curator through StateManager.setProductParams while CONFIGURING; every later change is a Timelock action, scheduled and executed through that Vault's own VaultTimelock"},
+    {fn:"cycleRecords", role:null, method:"cycleRecords", kind:"read", args:[{n:"cycleNumber",t:"uint",def:"0"}],
+      note:"per-cycle summary: acceptedTotalAssets, cashTokenDistributed, bonusUsdtDistributed, completed"},
+    {fn:"MAX_CYCLE_REQUESTS", role:null, method:"MAX_CYCLE_REQUESTS", kind:"read", args:[]},
+  ]},
+  { name:"LiquidityBridge", key:"LiquidityBridge", accent:"var(--agt)", actions:[
+    {fn:"bridgeDeposit → shares", role:"fromVault itself, or fromVault's Allocator", method:"bridgeDeposit", kind:"tx",
+      args:[{n:"assets",t:"usdt",def:"1000"},{n:"fromVault",t:"address",def:"lpVault"},{n:"toVault",t:"address",def:"cashVault"}],
+      note:"fromVault must have approved USDT to this bridge. Authority is read off fromVault itself — there is no global role and no bridge-level registry"},
+    {fn:"usdt", role:null, method:"usdt", kind:"read", args:[]},
+  ]},
+  { name:"VaultFactory", key:"VaultFactory", accent:"var(--gov)", actions:[
+    {fn:"stateManager", role:null, method:"stateManager", kind:"read", args:[],
+      note:"deployVault is permissionless — msg.sender (or an explicitly named address) becomes the new Vault's Owner, and the Factory deploys the new Vault through a per-kind Deployer contract and binds that Vault's own VaultTimelock in the same transaction. It takes a VaultParams struct (including a feeKind field) and is payable — pays ProtocolFeeConfig's DeployVault fee for the chosen feeKind — so it is not exposed in the form UI. Use `./script/deploy.sh --vault cash|note|lp`, which deploys a Vault and does all of its wiring; a Vault created directly from a wallet can be handed to that same script with VAULT=0x… to be wired"},
+    {fn:"earnDeployer", role:null, method:"earnDeployer", kind:"read", args:[],
+      note:"holds EarnVault's creation code and deploys one per call. Splitting the two kinds across two Deployers is what keeps each under EIP-170 — a Deployer's runtime code IS its Vault's creation code"},
+    {fn:"lpDeployer", role:null, method:"lpDeployer", kind:"read", args:[]},
+  ]},
+  { name:"Settlement (W4)", key:"Settlement", accent:"var(--stl)", actions:[
+    {fn:"setOperator", role:"that Vault's Owner", method:"setOperator", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"account",t:"address"},{n:"approved",t:"bool",def:"true"}],
+      note:"operator sets are per-Vault; one Settlement contract may serve many Vaults without sharing signers"},
+    {fn:"setThreshold", role:"that Vault's Owner", method:"setThreshold", kind:"tx",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"newThreshold",t:"uint",def:"1"}],
+      note:"1 <= threshold <= signerCount; a Vault left at threshold 0 has all signature checks reject"},
+    {fn:"isOperator", role:null, method:"isOperator", kind:"read",
+      args:[{n:"vault",t:"address",def:"cashVault"},{n:"account",t:"address"}]},
+    {fn:"threshold", role:null, method:"threshold", kind:"read", args:[{n:"vault",t:"address",def:"cashVault"}]},
+    {fn:"executed", role:null, method:"executed", kind:"read", args:[{n:"batchHash",t:"hash"}],
+      note:"submitBatch's nested SettlementInstruction struct isn't exposed in the form UI (same precedent as VaultFactory.deployVault) — assembled + signed off-chain by SettlementOperator (W5 scope)"},
+  ]},
+  { name:"AdapterFactory (W4)", key:"AdapterFactory", accent:"var(--adp)", actions:[
+    {fn:"isAdapter", role:null, method:"isAdapter", kind:"read", args:[{n:"adapter",t:"address",def:"cashAdapter"}]},
+    {fn:"fpaDeployer", role:null, method:"fpaDeployer", kind:"read", args:[],
+      note:"holds FirstPeriodAdapter creation bytecode — split out to keep AdapterFactory under the EIP-170 limit"},
+    {fn:"lqaDeployer", role:null, method:"lqaDeployer", kind:"read", args:[]},
+    {fn:"rwaDeployer", role:null, method:"rwaDeployer", kind:"read", args:[],
+      note:"deployAdapter/deployLiquidityAdapter/deployRWAAdapter are permissionless and take a params struct, so they are not exposed in the form UI. isAdapter is a provenance record only — whether an Adapter may join a Vault is decided by that Vault's Curator alone, not here"},
+  ]},
+  { name:"RWAAdapter (demo)", key:"RWAAdapter", accent:"var(--adp)", actions:[
+    {fn:"rwaToken", role:null, method:"rwaToken", kind:"read", args:[]},
+    {fn:"navOracle", role:null, method:"navOracle", kind:"read", args:[]},
+    {fn:"vault", role:null, method:"vault", kind:"read", args:[]},
+    {fn:"realAssets", role:null, method:"realAssets", kind:"read", args:[],
+      note:"balance(rwaToken) × NAVOracle price, converted to the Vault's accounting-asset decimals, plus any pending deal value"},
+  ]},
+  { name:"CashAdapter (FirstPeriodAdapter)", key:"CashAdapter", abiKey:"FirstPeriodAdapter", accent:"var(--iss)", actions:[
+    {fn:"createBuyOrder → orderId", role:"that Vault's Curator", method:"createBuyOrder", kind:"tx",
+      args:[{n:"amount",t:"usdt",def:"1000"},{n:"destination",t:"address"},{n:"mode (0=TOKEN_RETURN, 1=VALUE_RETURN)",t:"uint",def:"0"}]},
+{fn:"createSellOrder → orderId", role:"that Vault's Curator", method:"createSellOrder", kind:"tx",
+      args:[{n:"exitAsset (0x0 = deal-only exit)",t:"address"},{n:"exitAmount (token decimals)",t:"uint",def:"0"},
+            {n:"proceeds",t:"usdt",def:"1000"},{n:"payer",t:"address"},{n:"assetRecipient",t:"address"},
+            {n:"dealKey (buy orderId)",t:"uint",def:"0"},{n:"hasDeal",t:"bool"},
+            {n:"dealValueReduction",t:"usdt",def:"0"},{n:"expiry (unix seconds)",t:"uint"}],
+      note:"the one asset-exit path (2026-08-28). Counterparty pays THIS Adapter via fundSellOrder, then the Allocator delivers — the Allocator is never in the custody path and never approves USDT. Replaces the old createSellOrder(amount), the RWA Withdraw book and the whole Rebalance book. exitAsset must be one the Adapter accepts (setExitableAsset here; rwaToken on RWAAdapter; none on LiquidityAdapter)"},
+    {fn:"fundSellOrder", role:"that order's declared payer", method:"fundSellOrder", kind:"tx", args:[{n:"orderId",t:"uint"}],
+      note:"approve `proceeds` of USDT to this Adapter first. A plain ERC-20 transfer carries no order id and cannot be matched — this is the only way an order becomes FUNDED"},
+    {fn:"refundSellOrder", role:"that order's payer", method:"refundSellOrder", kind:"tx", args:[{n:"orderId",t:"uint"}],
+      note:"only after expiry; deliberately not Curator/Allocator-gated so a counterparty who paid can recover without depending on whoever failed to deliver. Works while the Vault is paused"},
+    {fn:"setExitableAsset", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"setExitableAsset", kind:"tx",
+      args:[{n:"token",t:"address"},{n:"allowed",t:"bool"}],
+      note:"explicit allowlist — nothing is sellable until listed, so a Sell Order can never be used to move an unrelated token out. asset() itself is rejected"},
+    {fn:"cancelBuyOrder", role:"that Vault's Curator or Guardian", method:"cancelBuyOrder", kind:"tx", args:[{n:"orderId",t:"uint"}]},
+    {fn:"cancelSellOrder", role:"that Vault's Curator or Guardian", method:"cancelSellOrder", kind:"tx", args:[{n:"orderId",t:"uint"}],
+      note:"a CREATED order just frees its reservations; a FUNDED one refunds the payer and ends REFUNDED — cancelling while keeping the counterparty's money is not possible"},
+    {fn:"executeBuy", role:"that Vault's Allocator", method:"executeBuy", kind:"tx", args:[{n:"orderId",t:"uint"}],
+      note:"pendingDeposits[orderId] auto-initializes at cost basis on execution"},
+    {fn:"executeSell", role:"that Vault's Allocator", method:"executeSell", kind:"tx", args:[{n:"orderId",t:"uint"}],
+      note:"FUNDED and unexpired only. Reduces the linked dealValue and/or moves the token out in the same call, so the exited value is never counted twice"},
+    {fn:"updateDealData", role:"this Adapter's own Data Provider", method:"updateDealData", kind:"tx",
+      args:[{n:"orderId",t:"uint"},{n:"newValue",t:"usdt"}], note:"VALUE_RETURN orders only"},
+    {fn:"clearDealValue", role:"that Vault's Allocator", method:"clearDealValue", kind:"tx", args:[{n:"orderId",t:"uint"}],
+      note:"TOKEN_RETURN orders only — call once the token has settled at the Vault"},
+    {fn:"setStalenessWindow", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"setStalenessWindow", kind:"tx", args:[{n:"window (seconds)",t:"uint",def:"129600"}]},
+    {fn:"deposit → shares", role:null, method:"deposit", kind:"tx", args:[{n:"assets",t:"usdt",def:"1000"},{n:"receiver",t:"address",def:"cashVault"}],
+      note:"standard ERC-4626 capital sourcing from the Vault; approve USDT to this adapter first"},
+    {fn:"realAssets", role:null, method:"realAssets", kind:"read", args:[]},
+    {fn:"totalAssets", role:null, method:"totalAssets", kind:"read", args:[]},
+    {fn:"buyOrders", role:null, method:"buyOrders", kind:"read", args:[{n:"orderId",t:"uint"}]},
+    {fn:"sellOrders", role:null, method:"sellOrders", kind:"read", args:[{n:"orderId",t:"uint"}]},
+    {fn:"reservedExitAmount", role:null, method:"reservedExitAmount", kind:"read", args:[{n:"token",t:"address"}],
+      note:"spoken for by unsettled Sell Orders — two orders can never promise the same tokens"},
+    {fn:"reservedDealValue", role:null, method:"reservedDealValue", kind:"read", args:[{n:"dealKey",t:"uint"}]},
+    {fn:"lockedProceeds", role:null, method:"lockedProceeds", kind:"read", args:[],
+      note:"counterparty money held for FUNDED orders. Excluded from realAssets() and from what recallAdapter may take — it is not the Vault's until the exit asset is delivered"},
+    {fn:"pendingDeposits", role:null, method:"pendingDeposits", kind:"read", args:[{n:"orderId",t:"uint"}]},
+    {fn:"vault", role:null, method:"vault", kind:"read", args:[]},
+  ]},
+  { name:"NoteAdapter (FirstPeriodAdapter)", key:"NoteAdapter", abiKey:"FirstPeriodAdapter", accent:"var(--que)", actions:[
+    {fn:"createBuyOrder → orderId", role:"that Vault's Curator", method:"createBuyOrder", kind:"tx",
+      args:[{n:"amount",t:"usdt",def:"1000"},{n:"destination",t:"address"},{n:"mode (0=TOKEN_RETURN, 1=VALUE_RETURN)",t:"uint",def:"0"}]},
+{fn:"createSellOrder → orderId", role:"that Vault's Curator", method:"createSellOrder", kind:"tx",
+      args:[{n:"exitAsset (0x0 = deal-only exit)",t:"address"},{n:"exitAmount (token decimals)",t:"uint",def:"0"},
+            {n:"proceeds",t:"usdt",def:"1000"},{n:"payer",t:"address"},{n:"assetRecipient",t:"address"},
+            {n:"dealKey (buy orderId)",t:"uint",def:"0"},{n:"hasDeal",t:"bool"},
+            {n:"dealValueReduction",t:"usdt",def:"0"},{n:"expiry (unix seconds)",t:"uint"}],
+      note:"the one asset-exit path (2026-08-28). Counterparty pays THIS Adapter via fundSellOrder, then the Allocator delivers — the Allocator is never in the custody path and never approves USDT. Replaces the old createSellOrder(amount), the RWA Withdraw book and the whole Rebalance book. exitAsset must be one the Adapter accepts (setExitableAsset here; rwaToken on RWAAdapter; none on LiquidityAdapter)"},
+    {fn:"fundSellOrder", role:"that order's declared payer", method:"fundSellOrder", kind:"tx", args:[{n:"orderId",t:"uint"}],
+      note:"approve `proceeds` of USDT to this Adapter first. A plain ERC-20 transfer carries no order id and cannot be matched — this is the only way an order becomes FUNDED"},
+    {fn:"refundSellOrder", role:"that order's payer", method:"refundSellOrder", kind:"tx", args:[{n:"orderId",t:"uint"}],
+      note:"only after expiry; deliberately not Curator/Allocator-gated so a counterparty who paid can recover without depending on whoever failed to deliver. Works while the Vault is paused"},
+    {fn:"setExitableAsset", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"setExitableAsset", kind:"tx",
+      args:[{n:"token",t:"address"},{n:"allowed",t:"bool"}],
+      note:"explicit allowlist — nothing is sellable until listed, so a Sell Order can never be used to move an unrelated token out. asset() itself is rejected"},
+    {fn:"cancelSellOrder", role:"that Vault's Curator or Guardian", method:"cancelSellOrder", kind:"tx", args:[{n:"orderId",t:"uint"}]},
+    {fn:"cancelBuyOrder", role:"that Vault's Curator or Guardian", method:"cancelBuyOrder", kind:"tx", args:[{n:"orderId",t:"uint"}]},
+    {fn:"executeBuy", role:"that Vault's Allocator", method:"executeBuy", kind:"tx", args:[{n:"orderId",t:"uint"}]},
+    {fn:"executeSell", role:"that Vault's Allocator", method:"executeSell", kind:"tx", args:[{n:"orderId",t:"uint"}],
+      note:"FUNDED and unexpired only. Reduces the linked dealValue and/or moves the token out in the same call, so the exited value is never counted twice"},
+    {fn:"updateDealData", role:"this Adapter's own Data Provider", method:"updateDealData", kind:"tx", args:[{n:"orderId",t:"uint"},{n:"newValue",t:"usdt"}]},
+    {fn:"clearDealValue", role:"that Vault's Allocator", method:"clearDealValue", kind:"tx", args:[{n:"orderId",t:"uint"}]},
+    {fn:"realAssets", role:null, method:"realAssets", kind:"read", args:[]},
+    {fn:"totalAssets", role:null, method:"totalAssets", kind:"read", args:[]},
+    {fn:"buyOrders", role:null, method:"buyOrders", kind:"read", args:[{n:"orderId",t:"uint"}]},
+    {fn:"pendingDeposits", role:null, method:"pendingDeposits", kind:"read", args:[{n:"orderId",t:"uint"}]},
+    {fn:"vault", role:null, method:"vault", kind:"read", args:[]},
+  ]},
+  { name:"LPAdapter (LiquidityAdapter)", key:"LPAdapter", abiKey:"LiquidityAdapter", accent:"var(--uni)", actions:[
+    {fn:"setBridgeTarget", role:"Curator direct while CONFIGURING, else via VaultTimelock", method:"setBridgeTarget", kind:"tx",
+      args:[{n:"liquidityBridge",t:"address"},{n:"cashVault",t:"address",def:"cashVault"}],
+      note:"Curator's initial configuration of the structural LP→Cash bridge target; the LP vault reads it when bridging deposits"},
+    {fn:"createBuyOrder → orderId", role:"that Vault's Curator", method:"createBuyOrder", kind:"tx",
+      args:[{n:"amount",t:"usdt",def:"1000"},{n:"destination",t:"address"},{n:"mode (0=TOKEN_RETURN, 1=VALUE_RETURN)",t:"uint",def:"0"}]},
+    {fn:"executeBuy", role:"that Vault's Allocator", method:"executeBuy", kind:"tx", args:[{n:"orderId",t:"uint"}]},
+    {fn:"clearDealValue", role:"that Vault's Allocator", method:"clearDealValue", kind:"tx", args:[{n:"orderId",t:"uint"}]},
+    {fn:"liquidityBridge", role:null, method:"liquidityBridge", kind:"read", args:[]},
+    {fn:"cashVault", role:null, method:"cashVault", kind:"read", args:[]},
+    {fn:"realAssets", role:null, method:"realAssets", kind:"read", args:[],
+      note:"inherited Recorded Position leg"},
+    {fn:"vault", role:null, method:"vault", kind:"read", args:[]},
+  ]},
+];
+
+// ---- arg parsing ------------------------------------------------------------
+// Label for a free-text input. `usdt` args are denominated in the settlement token's own base
+// units, so the annotation has to follow that token's decimals() rather than assume 6.
+function argLabel(arg){
+  if(arg.t!=="usdt") return arg.n;
+  return `${arg.n} (${usdtDecimals===null ? "token units" : usdtDecimals+"-dec"})`;
+}
+function defVal(t,def){
+  // `usdt` amounts are declared in WHOLE settlement tokens and scaled here, because the
+  // settlement token is 6-decimal on BSC testnet's MockUSDT and 18-decimal on BSC mainnet
+  // (USDT 0x55d398326f99059fF775485246999027B3197955). Until the live value is known the field
+  // is left empty rather than pre-filled with a wrong magnitude.
+  if(t==="usdt"){
+    if(def===undefined || usdtDecimals===null) return "";
+    return (BigInt(def) * 10n ** BigInt(usdtDecimals)).toString();
+  }
+  if(def==="rwaAdapterToken") return deployments?.addresses?.SToken || "";
+  if(def==="cashVault") return deployments?.addresses?.CashVault || "";
+  if(def==="noteVault") return deployments?.addresses?.NoteVault || "";
+  if(def==="lpVault") return deployments?.addresses?.LPVault || "";
+  if(def==="cashAdapter") return deployments?.addresses?.CashAdapter || "";
+  if(def==="noteAdapter") return deployments?.addresses?.NoteAdapter || "";
+  if(def==="lpAdapter") return deployments?.addresses?.LPAdapter || "";
+  if(def==="rwaAdapter") return deployments?.addresses?.RWAAdapter || "";
+  if(def==="settlement") return deployments?.addresses?.Settlement || "";
+  if(def==="revenuePool") return deployments?.addresses?.RevenuePool || "";
+  if(def==="cashVaultTimelock") return deployments?.addresses?.CashVaultTimelock || "";
+  if(def==="now") return Math.floor(Date.now()/1000).toString();
+  return def ?? "";
+}
+function parseArg(t, raw){
+  switch(t){
+    case "role": return roleHash(raw);
+    case "module": return MODULE_IDS.indexOf(raw);
+    case "tranche": return Number(raw);
+    case "productState": return PRODUCT_STATE_NAMES.indexOf(raw);
+    case "cycleState": return CYCLE_STATE_NAMES.indexOf(raw);
+    case "pauseReason": return PAUSE_REASON_NAMES.indexOf(raw) + 1; // ACTIVE=0 excluded from list
+    case "actionClass": return ACTION_CLASS_NAMES.indexOf(raw);
+    case "assetMode": return ASSET_MODE_NAMES.indexOf(raw);
+    case "queueType": return QUEUE_TYPE_NAMES.indexOf(raw);
+    case "feeKind": return FEE_KIND_NAMES.indexOf(raw);
+    case "creationFeeAction": return CREATION_FEE_ACTION_NAMES.indexOf(raw);
+    case "bool": return raw === "true";
+    case "selector": return raw.trim();
+    case "hash": return raw.startsWith("0x") && raw.length===66 ? raw : ethers.id(raw);
+    case "address": return ethers.getAddress(raw.trim());
+    case "uint": case "usdt": return BigInt(raw.trim());
+    case "date": {
+      const t = raw.trim();
+      if(!t) throw new Error("date required");
+      const ms = Date.parse(t+"T00:00:00Z");
+      if(Number.isNaN(ms)) throw new Error("invalid date: "+raw);
+      return BigInt(Math.floor(ms/1000));
+    }
+    case "str": return raw;
+    case "bytes": return raw.trim()==="" ? "0x" : raw.trim();
+    case "bytesEmpty": return "0x";
+    case "bytes32raw": return raw.trim();
+    case "addrlist": return raw.split(",").map(a=>ethers.getAddress(a.trim()));
+    case "uint8list": return raw.split(",").map(n=>Number(n.trim()));
+    case "uintlist": return raw.split(",").map(n=>BigInt(n.trim()));
+    default: return raw;
+  }
+}
+
+function fmt(v){
+  if(typeof v==="bigint") return v.toString();
+  if(Array.isArray(v)) return "[ "+v.map(fmt).join(", ")+" ]";
+  if(v && typeof v==="object"){ // Result struct
+    try{ return JSON.stringify(v, (_,x)=>typeof x==="bigint"?x.toString():x); }catch{ return String(v); }
+  }
+  return String(v);
+}
+
+// ---- render -----------------------------------------------------------------
+function render(){
+  const root = $("#modules"); root.innerHTML="";
+  MODULES.forEach((m, mi)=>{
+    const addr = deployments?.addresses?.[m.key];
+    const mod = document.createElement("div"); mod.className="module";
+    mod.innerHTML = `<div class="mhead"><span class="mtag" style="background:${m.accent}"></span>
+        <span class="mname">${m.name}</span>
+        <span class="maddr">${addr||"— not loaded —"}</span>
+        <span class="chev">▾</span></div><div class="mbody"></div>`;
+    const body = $(".mbody",mod);
+    mod.querySelector(".mhead").onclick=()=>mod.classList.toggle("collapsed");
+    m.actions.forEach((a,ai)=>{
+      const row=document.createElement("div"); row.className="action";
+      const roleCls = a.role ? "req" : "read";
+      const roleTxt = a.role ? `needs ${a.role}` : (a.kind==="read"?"view · open":"open");
+      let inputsHtml="";
+      a.args.forEach((arg,idx)=>{
+        const id=`i_${mi}_${ai}_${idx}`;
+        if(arg.t==="role"){
+          inputsHtml+=`<select id="${id}">${ROLE_NAMES.map(r=>`<option>${r}</option>`).join("")}</select>`;
+        }else if(arg.t==="module"){
+          inputsHtml+=`<select id="${id}">${MODULE_IDS.map(r=>`<option ${r===arg.def?"selected":""}>${r}</option>`).join("")}</select>`;
+        }else if(arg.t==="tranche"){
+          inputsHtml+=`<select id="${id}">${TRANCHE_NAMES.map((r,i)=>`<option value="${i}">${r}</option>`).join("")}</select>`;
+        }else if(arg.t==="productState"){
+          inputsHtml+=`<select id="${id}">${PRODUCT_STATE_NAMES.map(r=>`<option ${r===arg.def?"selected":""}>${r}</option>`).join("")}</select>`;
+        }else if(arg.t==="cycleState"){
+          inputsHtml+=`<select id="${id}">${CYCLE_STATE_NAMES.map(r=>`<option ${r===arg.def?"selected":""}>${r}</option>`).join("")}</select>`;
+        }else if(arg.t==="pauseReason"){
+          inputsHtml+=`<select id="${id}">${PAUSE_REASON_NAMES.map(r=>`<option ${r===arg.def?"selected":""}>${r}</option>`).join("")}</select>`;
+        }else if(arg.t==="actionClass"){
+          inputsHtml+=`<select id="${id}">${ACTION_CLASS_NAMES.map(r=>`<option ${r===arg.def?"selected":""}>${r}</option>`).join("")}</select>`;
+        }else if(arg.t==="assetMode"){
+          inputsHtml+=`<select id="${id}">${ASSET_MODE_NAMES.map(r=>`<option ${r===arg.def?"selected":""}>${r}</option>`).join("")}</select>`;
+        }else if(arg.t==="queueType"){
+          inputsHtml+=`<select id="${id}">${QUEUE_TYPE_NAMES.map(r=>`<option ${r===arg.def?"selected":""}>${r}</option>`).join("")}</select>`;
+        }else if(arg.t==="feeKind"){
+          inputsHtml+=`<select id="${id}">${FEE_KIND_NAMES.map(r=>`<option ${r===arg.def?"selected":""}>${r}</option>`).join("")}</select>`;
+        }else if(arg.t==="creationFeeAction"){
+          inputsHtml+=`<select id="${id}">${CREATION_FEE_ACTION_NAMES.map(r=>`<option ${r===arg.def?"selected":""}>${r}</option>`).join("")}</select>`;
+        }else if(arg.t==="bool"){
+          inputsHtml+=`<select id="${id}">${BOOL_NAMES.map(r=>`<option ${r===arg.def?"selected":""}>${r}</option>`).join("")}</select>`;
+        }else if(arg.t==="bytesEmpty"){
+          inputsHtml+=`<input id="${id}" value="0x" disabled style="opacity:.5;min-width:54px" title="opaque off-chain sig (MVP)"/>`;
+        }else if(arg.t==="date"){
+          inputsHtml+=`<input type="date" id="${id}"/>`;
+        }else{
+          inputsHtml+=`<input id="${id}" placeholder="${argLabel(arg)}" value="${defVal(arg.t,arg.def)}"/>`;
+        }
+      });
+      const btnCls = a.kind==="read" ? "run" : "run write";
+      row.innerHTML=`<div class="meta"><div class="fn">${a.fn}</div>
+          <div class="role ${roleCls}">${roleTxt}</div>
+          ${a.note?`<div class="note">${a.note}</div>`:""}</div>
+        <div class="inputs">${inputsHtml||'<span style="color:#3c4554">no args</span>'}</div>
+        <button class="${btnCls}">${a.kind==="read"?"Read":"Send"}</button>`;
+      $("button",row).onclick=()=>invoke(m,a,mi,ai);
+      body.appendChild(row);
+    });
+    root.appendChild(mod);
+  });
+}
+
+// ---- invoke -----------------------------------------------------------------
+async function invoke(m,a,mi,ai){
+  if(!signer){ log("connect a wallet first","err"); return; }
+  const addr = deployments?.addresses?.[m.key];
+  if(!addr){ log(`${m.key} address not loaded`,"err"); return; }
+  let args;
+  try{
+    args = a.args.map((arg,idx)=>parseArg(arg.t, $(`#i_${mi}_${ai}_${idx}`).value));
+  }catch(e){ log("bad input: "+e.message,"err"); return; }
+
+  // Existing Vault actions share the live Gate / Timelock routing, including LP vaults.
+  if(["EarnVault","LiquidityEarnVault"].includes(m.abiKey || m.key)){
+    if(a.method==="setGate") return kytAction(c=>kytSet(c,addr,args[0]));
+    if(a.method==="requestDeposit") return kytAction(async c=>{
+      const r=await c.deposit(addr,args[0],args[1],kytText);
+      return r.mode==="kyt" ? {status:"Screening requested; no funds moved yet",gateway:r.gateway,screeningRequestId:r.screeningRequestId,hash:r.receipt.hash}
+        : {status:"Vault deposit queued; awaiting settlement",vaultRequestId:r.vaultRequestId,hash:r.receipt.hash};
+    });
+  }
+
+  if(a.method==="registerAsset"){
+    // last 4 form fields are ProductInfo's productName/annualYieldRateBps/maturityTimestamp/underlyingAsset.
+    // issuer is NOT a form field — the contract forces issuer = msg.sender and ignores anything else,
+    // so we send the connected account here (or the zero address if somehow not connected).
+    const [metadataHash,name,symbol,decimals,feeKind,productName,annualYieldRateBps,maturityTimestamp,underlyingAsset] = args;
+    const product = { productName, annualYieldRateBps, maturityTimestamp,
+      issuer: account || ethers.ZeroAddress, underlyingAsset };
+    args = [metadataHash,name,symbol,decimals,feeKind,product];
+  }
+
+  const c = new ethers.Contract(addr, abis[m.abiKey || m.key], signer);
+  try{
+    if(a.kind==="read"){
+      const res = await c[a.method](...args);
+      log(`${m.name}.${a.method}() → <span class="h">${fmt(res)}</span>`,"info");
+      return;
+    }
+    if(a.kind==="navEip712"){
+      const [rwaToken,price,dataTimestamp] = args;
+      const network = await signer.provider.getNetwork();
+      const domain = { name:"NAVOracle", version:"1", chainId: network.chainId, verifyingContract: addr };
+      const types = { NAVUpdate: [
+        { name:"rwaToken", type:"address" },
+        { name:"price", type:"uint256" },
+        { name:"dataTimestamp", type:"uint256" },
+      ]};
+      log(`signing EIP-712 NAVUpdate for ${rwaToken.slice(0,10)}… as ${account.slice(0,10)}…`);
+      const sig = await signer.signTypedData(domain, types, { rwaToken, price, dataTimestamp });
+      const tx = await c.updateNAV(rwaToken, price, dataTimestamp, sig);
+      log(`updateNAV sent <span class="h">${tx.hash.slice(0,18)}…</span>`);
+      await tx.wait(); log(`updateNAV confirmed → price=${price} pushed for ${rwaToken.slice(0,10)}…`,"ok");
+      return;
+    }
+    // tx: preview return value via staticCall when the fn returns something
+    let preview;
+    try{ preview = await c[a.method].staticCall(...args); }catch(_){}
+    const tx = await c[a.method](...args);
+    log(`${m.name}.${a.method}() sent <span class="h">${tx.hash.slice(0,18)}…</span>`);
+    const rc = await tx.wait();
+    let extra = preview!==undefined ? ` → returns <span class="h">${fmt(preview)}</span>` : "";
+    log(`confirmed in block ${rc.blockNumber}${extra}`,"ok");
+  }catch(e){
+    const reason = e.reason || e.shortMessage || e.info?.error?.message || e.message;
+    log(`${m.name}.${a.method} reverted: ${reason}`,"err");
+  }
+}
+
+// ---- wallet / roles ---------------------------------------------------------
+async function refreshRoles(){
+  const box=$("#s-roles");
+  if(!signer || !deployments?.addresses?.HyperAccessControl){ box.innerHTML='<span class="rb none">—</span>'; return; }
+  const ac = new ethers.Contract(deployments.addresses.HyperAccessControl, abis.HyperAccessControl, provider);
+  myRoles=[];
+  for(const r of ROLE_NAMES){
+    try{ if(await ac.hasRole(roleHash(r), account)) myRoles.push(r); }catch(_){}
+  }
+  // NAV signer?
+  let isSigner=false;
+  try{
+    const rwaTok = deployments?.addresses?.SToken;
+    if(rwaTok && deployments?.addresses?.NAVOracle){
+      const nav=new ethers.Contract(deployments.addresses.NAVOracle, abis.NAVOracle, provider);
+      isSigner = (await nav.signerOf(rwaTok)).toLowerCase()===account.toLowerCase();
+    }
+  }catch(_){}
+  const tags = myRoles.map(r=>`<span class="rb ${r}">${r}</span>`);
+  if(isSigner) tags.push('<span class="rb" style="color:var(--sig)">NAV SIGNER</span>');
+  box.innerHTML = tags.length? tags.join("") : '<span class="rb none">no roles</span>';
+}
+
+async function connect(){
+  if(!window.ethereum){ showBanner("No injected wallet found. Install MetaMask and reload."); return; }
+  provider = new ethers.BrowserProvider(window.ethereum);
+  await provider.send("eth_requestAccounts",[]);
+  signer = await provider.getSigner();
+  account = await signer.getAddress();
+  const net = await provider.getNetwork(); chainId = Number(net.chainId);
+  $("#dot").classList.add("ok"); $("#netlabel").textContent = `chain ${chainId}`;
+  $("#acctbox").innerHTML = `<span class="addr">${account.slice(0,6)}…${account.slice(-4)}</span>`;
+  $("#connect").textContent="Connected";
+  $("#s-acct").textContent = account;
+  $("#s-net").textContent = (deployments && Number(deployments.chainId)===chainId)
+      ? `chain ${chainId} ✓` : `chain ${chainId} (deployments.json: ${deployments?.chainId??"?"})`;
+  if(deployments && Number(deployments.chainId)!==chainId)
+    showBanner(`MetaMask is on chain ${chainId} but deployments.json is for chain ${deployments.chainId}. Switch networks.`);
+  await loadUsdtDecimals(provider);
+  await refreshRoles();
+  window.ethereum.on?.("accountsChanged", ()=>location.reload());
+  window.ethereum.on?.("chainChanged", ()=>location.reload());
+  log(`connected ${account} on chain ${chainId}`,"ok");
+  if($("#kyt-vault").value || $("#kyt-custom-vault").value) await kytAction(kytRead);
+}
+$("#connect").onclick=connect;
+
+function showBanner(t){ const b=$("#banner"); b.textContent=t; b.style.display="block"; }
+
+// ---- settlement token decimals ----------------------------------------------
+// The vault derives its 1:1 share price from this same decimals() call
+// (BaseVault.parityPrice), so the panel reads it rather than hardcoding 6.
+async function loadUsdtDecimals(p){
+  const addr = deployments?.addresses?.USDT || deployments?.addresses?.MockUSDT;
+  if(!addr || !p || usdtDecimals!==null) return;
+  try{
+    const c = new ethers.Contract(addr, ["function decimals() view returns (uint8)"], p);
+    usdtDecimals = Number(await c.decimals());
+    $("#s-usdt").textContent = `${addr} (${usdtDecimals}-dec)`;
+    render(); // re-render so amount fields pick up the right magnitude
+  }catch(_){ /* no node yet — fields stay blank and unannotated until connect() retries */ }
+}
+
+// ---- bootstrap --------------------------------------------------------------
+async function boot(){
+  if(typeof ethers==="undefined"){ showBanner("ethers.js failed to load (offline?)."); return; }
+  // Prefer globals injected by config.js / abis.js (work from file://). Fall back to fetch().
+  if(window.HT_ABIS) abis = window.HT_ABIS;
+  if(window.HT_DEPLOYMENTS) deployments = window.HT_DEPLOYMENTS;
+  try{
+    if(!deployments) deployments = await (await fetch("./deployments.json?"+Date.now())).json();
+    if(!abis) abis = await (await fetch("./abis.json?"+Date.now())).json();
+  }catch(e){ /* handled below */ }
+  // deployments.json only carries the core stage's addresses; StateManager, Settlement, the
+  // factories and the bridge are written by the platform stage into its own file, and each Vault
+  // into deployments-vault-<label>.json. Merge them so those sections resolve an address instead
+  // of rendering "— not loaded —". Missing files 404 harmlessly. (script/deploy.sh also writes the
+  // merged set into config.js, which is what a hosted copy loads — this path only matters when
+  // serving the raw folder over http.)
+  try{
+    const extra = await (await fetch("./deployments-platform.json?"+Date.now())).json();
+    if(extra?.addresses && deployments && Number(extra.chainId)===Number(deployments.chainId))
+      Object.assign(deployments.addresses, extra.addresses);
+  }catch(_){ /* platform not deployed, or running from file:// — see config.js */ }
+  // Vault files are per-label and there can be any number of them, which a static fetch list
+  // cannot enumerate. The three delivery labels are the ones this panel has sections for; anything
+  // else is reachable through config.js's `vaults` array.
+  const TITLED = {cash:"Cash", note:"Note", lp:"LP"};
+  for(const label of Object.keys(TITLED)){
+    try{
+      const r = await (await fetch("./deployments-vault-"+label+".json?"+Date.now())).json();
+      if(r?.vault && deployments && Number(r.chainId)===Number(deployments.chainId)){
+        deployments.vaults = (deployments.vaults||[]).concat(r.vault);
+        deployments.addresses[TITLED[label]+"Vault"] = r.vault.vault;
+        deployments.addresses[TITLED[label]+"Adapter"] = r.vault.adapter;
+        deployments.addresses[TITLED[label]+"VaultTimelock"] = r.vault.timelock;
+      }
+    }catch(_){ /* that vault is not deployed */ }
+  }
+  if(!deployments || !abis){
+    showBanner("No deployment loaded. For a deployed (e.g. testnet) instance, control-panel/config.js + abis.js should be present — just open this page. To generate locally: `anvil`, then `./script/deploy.sh --network anvil` and `./control-panel/build-abis.sh`. See docs/deployment-handbook.md.");
+  }
+  if(deployments && window.ethereum){
+    try{ await loadUsdtDecimals(new ethers.BrowserProvider(window.ethereum)); }catch(_){}
+  }
+  if(deployments){
+    $("#s-net").textContent = `chain ${deployments.chainId} (not connected)`;
+    $("#s-vault").textContent = deployments?.addresses?.SToken || "—";
+  }
+  render();
+  kytPopulateVaults();
+}
+boot();
+</script>
+</body>
+</html>

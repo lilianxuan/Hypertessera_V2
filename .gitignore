@@ -1,0 +1,40 @@
+out/
+cache/
+.DS_Store
+**/.DS_Store
+
+# deploy artifacts (regenerated per run)
+broadcast/
+control-panel/deployments.json
+control-panel/deployments-platform.json
+control-panel/deployments-vault-*.json
+control-panel/deployments-merged.json
+# control-panel/standalone.html is a committed build artifact (regenerate via bundle.sh)
+
+# secrets
+.env
+# BNB Testnet integration env — holds TESTNET_MNEMONIC (the 15 role wallets' seed) and TEST_PK.
+# Template lives at offchain/scripts/testnet/.env.testnet.example; the real file must never be committed.
+.env.testnet
+**/.env.testnet
+
+# offchain (Module E) — TypeScript package build artifacts
+offchain/node_modules/
+offchain/dist/
+# local devnet deploy output (regenerated per run by scripts/local/deploy.ts)
+offchain/local/addresses.json
+
+# local worktrees (agent workspaces)
+.worktrees/
+
+# client's frontend repo, cloned locally for integration work (alliancechuan/hyperTessera-web)
+hyperTessera-web/
+
+# AI coding agent files (settings, skills, worktrees) stay on each developer's machine
+.claude/
+.agents/
+skills-lock.json
+
+# local Claude Code instructions — kept out of the repo so each person can keep their own
+CLAUDE.md
+**/CLAUDE.md
