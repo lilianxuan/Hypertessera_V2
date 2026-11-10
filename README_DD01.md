@@ -8,16 +8,21 @@
 
 ## 本次交付
 
-新增业务源码只有 `src/Addition/GovernanceController.sol`。
-时间锁直接复用固定版本 OpenZeppelin `TimelockController`，不重写其逻辑。
-新增源码包含 NatSpec 及关键中文注释。
+本次合约源码集中放在 `src/addition/`：
+
+- `GovernanceController.sol`：本次编写的治理控制合约。
+- `TimelockController.sol`：固定版本 OpenZeppelin 5.1.0 标准时间锁的完整源码副本；
+  保留 MIT 许可及原注释，仅调整依赖导入路径并标注来源，不改变时间锁逻辑。
+
+原始 OpenZeppelin 依赖保留在 `lib/`。部署脚本和专项测试使用 `src/addition/` 中的两个合约。
 
 原 ZIP 中230个原文件保持字节级不变，Adapter / Vault / Settlement / NAVOracle /
 HyperAccessControl / VaultTimelock 源码均未改动。
 
 - [详细开发与权限交接说明](docs/dd01-governance.md)
 - [尽调修改方案](docs/尽调修改方案.md)
-- [新增治理控制合约](src/Addition/GovernanceController.sol)
+- [新增治理控制合约](src/addition/GovernanceController.sol)
+- [协议级标准时间锁](src/addition/TimelockController.sol)
 - [部署及公开配置检查脚本](script/DeployDD01Governance.s.sol)
 - [安全测试](test/DD01GovernanceSecurity.t.sol)
 - [真实协议整合测试](test/DD01GovernanceIntegration.t.sol)

@@ -7,7 +7,8 @@
   "missingOriginalFiles": [],
   "allOriginalFilesByteForByteUnchanged": true,
   "newBusinessSourceFiles": [
-    "src/Addition/GovernanceController.sol"
+    "src/addition/GovernanceController.sol",
+    "src/addition/TimelockController.sol"
   ],
   "originalFileHashes": {
     ".github/workflows/ci.yml": "02dc68d9df6d3ed2ad40633ae632326028962100b7ace0ead363c0f0b7f15d95",
@@ -240,5 +241,20 @@
     "test/WrappedAsset.t.sol": "f264a31ee91126e7b5873669b6ba1f3684cc7444ee87929810d0fb90e710307a",
     "test/mocks/MockERC1271Wallet.sol": "579732c3c73a188cda74df5504cb40a5bbafa46ce4d1f3fc8f2843d696f9f8ef",
     "test/mocks/MockUSDT.sol": "6f55d79d2a5d624c72edde9c4769aaffcc51e2eda39f470bafacd82601f54c7f"
-  }
+  },
+  "standardSourceCopies": [
+    {
+      "source": "src/addition/TimelockController.sol",
+      "upstreamSource": "lib/openzeppelin-contracts/contracts/governance/TimelockController.sol",
+      "packageVersion": "5.1.0",
+      "upstreamCommit": "69c8def5f222ff96f2b5beff05dfba996368aa79",
+      "upstreamSHA256": "89a4cf0e404a42f13d01efefb5c1b3b1d46641c670b626b1b885330f3faccd2a",
+      "localSHA256": "ce2aee75e692794a04b1c99f358e7f752bd4a61e792cbf1bfc485fecad4c8f31",
+      "adaptations": [
+        "Four dependency import paths",
+        "Source provenance comment"
+      ],
+      "logicUnchanged": true
+    }
+  ]
 }

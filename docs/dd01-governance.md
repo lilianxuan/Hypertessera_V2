@@ -16,12 +16,17 @@ Controller 的 Pool 转账路径目前只增加时间锁；不要据此宣称 [0
 
 ## 2. 文件及依赖
 
-- `src/Addition/GovernanceController.sol`：唯一新增业务合约，带 NatSpec 和关键中文说明。
+- `src/addition/GovernanceController.sol`：唯一新增业务合约，带 NatSpec 和关键中文说明。
+- `src/addition/TimelockController.sol`：OpenZeppelin 5.1.0 标准时间锁的完整源码副本，
+  仅调整依赖导入路径并标注来源；保留 MIT 许可，时间锁规则不变。
 - `script/DeployDD01Governance.s.sol`：标准时间锁和 Controller 的部署/模拟脚本；只部署新合约，
   不自动授权 Governor、撤销原角色、移交 Oracle Owner 或更改原协议配置。
 - `test/DD01GovernanceSecurity.t.sol`：权限、时间锁及绕过测试。
 - `test/DD01GovernanceIntegration.t.sol`：原协议合约的调用兼容性测试。
 - `test/DD01GovernanceDeployment.t.sol`：真实部署脚本入口及部署前绑定检查测试。
+
+两个合约统一位于小写 `src/addition/`。部署脚本及以上专项测试均使用该目录中的源码，
+原始 OpenZeppelin 库及其余依赖继续保留在 `lib/`，未修改依赖源码。
 
 ### 2026-11-10 复核修订
 

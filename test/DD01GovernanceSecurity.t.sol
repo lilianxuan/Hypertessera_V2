@@ -2,11 +2,11 @@
 pragma solidity 0.8.24;
 
 import {Test} from "forge-std/Test.sol";
-import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
+import {TimelockController} from "../src/addition/TimelockController.sol";
 import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
 import {Errors} from "@openzeppelin/contracts/utils/Errors.sol";
 import {HyperAccessControl} from "../src/governance/HyperAccessControl.sol";
-import {GovernanceController} from "../src/Addition/GovernanceController.sol";
+import {GovernanceController} from "../src/addition/GovernanceController.sol";
 import {NAVOracle} from "../src/asset-infrastructure/NAVOracle.sol";
 import {IReservePSM} from "../src/interfaces/IReservePSM.sol";
 import {CreationFeeAction, FeePaymentKind, ModuleId} from "../src/libs/Types.sol";

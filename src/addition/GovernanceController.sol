@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
-import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
+import {TimelockController} from "./TimelockController.sol";
 import {IHyperAccessControl} from "../interfaces/IHyperAccessControl.sol";
 import {IStateManager} from "../interfaces/IStateManager.sol";
 import {IUnifiedPool} from "../interfaces/IUnifiedPool.sol";

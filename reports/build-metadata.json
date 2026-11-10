@@ -1,7 +1,7 @@
 {
   "contract": "GovernanceController",
-  "source": "src/Addition/GovernanceController.sol",
-  "sourceSHA256": "53f05dde7bdce4d34f0836db4b88211bed1a198a8df6518a18bb78b282708a9d",
+  "source": "src/addition/GovernanceController.sol",
+  "sourceSHA256": "668dc8c8b66314f64da0e03770e86a8cae23e13dac74de2efe31774356b63d36",
   "compiler": {
     "version": "0.8.24+commit.e11b9ed9"
   },
@@ -22,7 +22,7 @@
       "bytecodeHash": "ipfs"
     },
     "compilationTarget": {
-      "src/Addition/GovernanceController.sol": "GovernanceController"
+      "src/addition/GovernanceController.sol": "GovernanceController"
     },
     "evmVersion": "cancun",
     "libraries": {},
@@ -30,5 +30,41 @@
   },
   "creationBytecodeBytes": 10612,
   "runtimeBytecodeBytesBeforeImmutableInstantiation": 8925,
-  "notADeployedRuntime": true
+  "notADeployedRuntime": true,
+  "relatedContracts": [
+    {
+      "contract": "TimelockController",
+      "source": "src/addition/TimelockController.sol",
+      "sourceSHA256": "ce2aee75e692794a04b1c99f358e7f752bd4a61e792cbf1bfc485fecad4c8f31",
+      "compiler": {
+        "version": "0.8.24+commit.e11b9ed9"
+      },
+      "settings": {
+        "remappings": [
+          "@openzeppelin/=lib/openzeppelin-contracts/",
+          "ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/",
+          "erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+          "forge-std/=lib/forge-std/src/",
+          "halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/",
+          "openzeppelin-contracts/=lib/openzeppelin-contracts/"
+        ],
+        "optimizer": {
+          "enabled": true,
+          "runs": 200
+        },
+        "metadata": {
+          "bytecodeHash": "ipfs"
+        },
+        "compilationTarget": {
+          "src/addition/TimelockController.sol": "TimelockController"
+        },
+        "evmVersion": "cancun",
+        "libraries": {},
+        "viaIR": true
+      },
+      "creationBytecodeBytes": 6535,
+      "runtimeBytecodeBytesBeforeImmutableInstantiation": 5281,
+      "notADeployedRuntime": true
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "test/DD01GovernanceDeployment.t.sol:DD01GovernanceDeploymentTest": {
-    "duration": "12ms 320µs 302ns",
+    "duration": "39ms 599µs 452ns",
     "test_results": {
       "testPreflightPermitsOmittedOptionalModules()": {
         "status": "Success",
@@ -17,10 +17,10 @@
         "labeled_addresses": {
           "0x45800b25d01574b036377f65671fa0c73598eea9": "DD01 deployment sender",
           "0x06a466a54d55155c9762e7a8cdf896fd1e1f0d2e": "DD01 deployment Cactus guardian",
-          "0x874026c07a462343c20e777d6a7bdcfa67a3e9ce": "DD01 deployment Cactus governor",
-          "0x785c98ab86feb72a4da869169b68b33f3657ba56": "DD01 other protocol governor"
+          "0x785c98ab86feb72a4da869169b68b33f3657ba56": "DD01 other protocol governor",
+          "0x874026c07a462343c20e777d6a7bdcfa67a3e9ce": "DD01 deployment Cactus governor"
         },
-        "duration": "45µs 841ns",
+        "duration": "48µs 925ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -39,10 +39,10 @@
         "labeled_addresses": {
           "0x45800b25d01574b036377f65671fa0c73598eea9": "DD01 deployment sender",
           "0x06a466a54d55155c9762e7a8cdf896fd1e1f0d2e": "DD01 deployment Cactus guardian",
-          "0x874026c07a462343c20e777d6a7bdcfa67a3e9ce": "DD01 deployment Cactus governor",
-          "0x785c98ab86feb72a4da869169b68b33f3657ba56": "DD01 other protocol governor"
+          "0x785c98ab86feb72a4da869169b68b33f3657ba56": "DD01 other protocol governor",
+          "0x874026c07a462343c20e777d6a7bdcfa67a3e9ce": "DD01 deployment Cactus governor"
         },
-        "duration": "53µs 877ns",
+        "duration": "127µs 89ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -61,10 +61,10 @@
         "labeled_addresses": {
           "0x45800b25d01574b036377f65671fa0c73598eea9": "DD01 deployment sender",
           "0x06a466a54d55155c9762e7a8cdf896fd1e1f0d2e": "DD01 deployment Cactus guardian",
-          "0x874026c07a462343c20e777d6a7bdcfa67a3e9ce": "DD01 deployment Cactus governor",
-          "0x785c98ab86feb72a4da869169b68b33f3657ba56": "DD01 other protocol governor"
+          "0x785c98ab86feb72a4da869169b68b33f3657ba56": "DD01 other protocol governor",
+          "0x874026c07a462343c20e777d6a7bdcfa67a3e9ce": "DD01 deployment Cactus governor"
         },
-        "duration": "522µs 614ns",
+        "duration": "536µs 379ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -83,10 +83,10 @@
         "labeled_addresses": {
           "0x45800b25d01574b036377f65671fa0c73598eea9": "DD01 deployment sender",
           "0x06a466a54d55155c9762e7a8cdf896fd1e1f0d2e": "DD01 deployment Cactus guardian",
-          "0x874026c07a462343c20e777d6a7bdcfa67a3e9ce": "DD01 deployment Cactus governor",
-          "0x785c98ab86feb72a4da869169b68b33f3657ba56": "DD01 other protocol governor"
+          "0x785c98ab86feb72a4da869169b68b33f3657ba56": "DD01 other protocol governor",
+          "0x874026c07a462343c20e777d6a7bdcfa67a3e9ce": "DD01 deployment Cactus governor"
         },
-        "duration": "159µs 243ns",
+        "duration": "341µs 604ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -105,10 +105,10 @@
         "labeled_addresses": {
           "0x45800b25d01574b036377f65671fa0c73598eea9": "DD01 deployment sender",
           "0x06a466a54d55155c9762e7a8cdf896fd1e1f0d2e": "DD01 deployment Cactus guardian",
-          "0x874026c07a462343c20e777d6a7bdcfa67a3e9ce": "DD01 deployment Cactus governor",
-          "0x785c98ab86feb72a4da869169b68b33f3657ba56": "DD01 other protocol governor"
+          "0x785c98ab86feb72a4da869169b68b33f3657ba56": "DD01 other protocol governor",
+          "0x874026c07a462343c20e777d6a7bdcfa67a3e9ce": "DD01 deployment Cactus governor"
         },
-        "duration": "212µs 59ns",
+        "duration": "193µs 584ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -120,17 +120,17 @@
         "decoded_logs": [],
         "kind": {
           "Unit": {
-            "gas": 8676415
+            "gas": 8676379
           }
         },
         "traces": [],
         "labeled_addresses": {
           "0x45800b25d01574b036377f65671fa0c73598eea9": "DD01 deployment sender",
           "0x06a466a54d55155c9762e7a8cdf896fd1e1f0d2e": "DD01 deployment Cactus guardian",
-          "0x874026c07a462343c20e777d6a7bdcfa67a3e9ce": "DD01 deployment Cactus governor",
-          "0x785c98ab86feb72a4da869169b68b33f3657ba56": "DD01 other protocol governor"
+          "0x785c98ab86feb72a4da869169b68b33f3657ba56": "DD01 other protocol governor",
+          "0x874026c07a462343c20e777d6a7bdcfa67a3e9ce": "DD01 deployment Cactus governor"
         },
-        "duration": "6ms 698µs 858ns",
+        "duration": "25ms 907µs 48ns",
         "breakpoints": {},
         "gas_snapshots": {}
       }
@@ -138,7 +138,7 @@
     "warnings": []
   },
   "test/DD01GovernanceIntegration.t.sol:DD01GovernanceIntegrationTest": {
-    "duration": "149ms 567µs 140ns",
+    "duration": "19ms 210µs 971ns",
     "test_results": {
       "test_DelayedConfigurationRoutesReachActualFeeBridgeAndStateModules()": {
         "status": "Success",
@@ -153,15 +153,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "402µs 894ns",
+        "duration": "692µs 265ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -178,15 +178,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "179µs 439ns",
+        "duration": "249µs 959ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -203,15 +203,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "267µs 537ns",
+        "duration": "377µs 786ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -228,15 +228,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "252µs 157ns",
+        "duration": "722µs 541ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -248,20 +248,20 @@
         "decoded_logs": [],
         "kind": {
           "Unit": {
-            "gas": 4403826
+            "gas": 4403862
           }
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "415µs 755ns",
+        "duration": "475µs 933ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -278,15 +278,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "89µs 609ns",
+        "duration": "98µs 862ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -303,15 +303,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "101µs 404ns",
+        "duration": "94µs 452ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -328,16 +328,16 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x6a9ea92305383acaf799ceae2038f107b3e24f62": "DD01 legacy mistaken Settlement EOA",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x6a9ea92305383acaf799ceae2038f107b3e24f62": "DD01 legacy mistaken Settlement EOA",
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "784µs 518ns",
+        "duration": "8ms 448µs 124ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -354,15 +354,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "90µs 984ns",
+        "duration": "1ms 153µs 984ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -379,15 +379,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "624µs 368ns",
+        "duration": "916µs 781ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -404,15 +404,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "352µs 728ns",
+        "duration": "311µs 31ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -429,15 +429,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "130µs 694ns",
+        "duration": "158µs 789ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -454,15 +454,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "92µs 86ns",
+        "duration": "95µs 844ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -479,15 +479,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "153µs 721ns",
+        "duration": "160µs 851ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -504,15 +504,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "326µs 300ns",
+        "duration": "345µs 830ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -529,15 +529,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "298µs 480ns",
+        "duration": "310µs 621ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -554,15 +554,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "143µs 390ns",
+        "duration": "146µs 293ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -579,15 +579,15 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
-          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
-          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
-          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
           "0xe1290c15fc0a269ac846ba366b19ae390f8f0783": "DD01 independent vault owner",
-          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient",
-          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer"
+          "0x8626b210dd2f2a36919622bbac2666cd0ac9a1fd": "DD01 settlement operator",
+          "0x7b8d553bd9bce46b1760d25d3b965c866e4dc61c": "DD01 executor",
+          "0xff5af64160c675cf6c48b4070722b9e74f654f17": "DD01 Cactus proposer",
+          "0x28a87e2f7b1f7ffccf3f30c3bb4199bd42a08992": "DD01 principal payer",
+          "0x0948c6e4faf5882ff3ecb41d294fb22302cd1754": "DD01 original governor",
+          "0x1dee787caafcc81ff7158f2ea872062ac6fe38bb": "DD01 external recipient"
         },
-        "duration": "728µs 482ns",
+        "duration": "891µs 346ns",
         "breakpoints": {},
         "gas_snapshots": {}
       }
@@ -595,7 +595,7 @@
     "warnings": []
   },
   "test/DD01GovernanceSecurity.t.sol:DD01GovernanceSecurityTest": {
-    "duration": "8ms 736µs 112ns",
+    "duration": "19ms 626µs 783ns",
     "test_results": {
       "testAllowedAndOwnedOracleSignerAndDeviationChangesWait()": {
         "status": "Success",
@@ -610,14 +610,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "370µs 157ns",
+        "duration": "346µs 245ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -634,14 +634,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "149µs 952ns",
+        "duration": "133µs 612ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -658,14 +658,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "99µs 895ns",
+        "duration": "80µs 864ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -682,14 +682,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "254µs 477ns",
+        "duration": "238µs 143ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -706,14 +706,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "169µs 266ns",
+        "duration": "138µs 476ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -730,14 +730,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "177µs 415ns",
+        "duration": "154µs 870ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -754,14 +754,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "167µs 701ns",
+        "duration": "122µs 388ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -778,14 +778,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "170µs 993ns",
+        "duration": "96µs 170ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -802,14 +802,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "72µs 816ns",
+        "duration": "63µs 771ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -826,14 +826,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "97µs 414ns",
+        "duration": "122µs 126ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -850,14 +850,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "58µs 531ns",
+        "duration": "73µs 29ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -869,19 +869,19 @@
         "decoded_logs": [],
         "kind": {
           "Unit": {
-            "gas": 1367896
+            "gas": 16925
           }
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "143µs 509ns",
+        "duration": "204µs 844ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -898,14 +898,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "18µs 74ns",
+        "duration": "26µs 520ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -922,14 +922,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "1ms 75µs 970ns",
+        "duration": "1ms 71µs 732ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -946,14 +946,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "145µs 883ns",
+        "duration": "227µs 509ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -970,14 +970,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "94µs 179ns",
+        "duration": "109µs 813ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -994,14 +994,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "131µs 920ns",
+        "duration": "399µs 367ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1018,14 +1018,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "87µs 675ns",
+        "duration": "141µs 994ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1042,14 +1042,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "132µs 245ns",
+        "duration": "372µs 956ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1066,14 +1066,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "187µs 376ns",
+        "duration": "362µs 809ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1090,14 +1090,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "98µs 244ns",
+        "duration": "138µs 321ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1114,14 +1114,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "132µs 870ns",
+        "duration": "387µs 738ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1138,14 +1138,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "80µs 599ns",
+        "duration": "122µs 169ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1162,14 +1162,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "305µs 442ns",
+        "duration": "5ms 133µs 771ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1186,14 +1186,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "271µs 560ns",
+        "duration": "4ms 995µs 503ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1210,14 +1210,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "70µs 894ns",
+        "duration": "103µs 708ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1234,14 +1234,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "208µs 41ns",
+        "duration": "278µs 153ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1258,14 +1258,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "31µs 995ns",
+        "duration": "54µs 893ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1282,14 +1282,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "149µs 170ns",
+        "duration": "313µs 763ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1306,14 +1306,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "189µs 162ns",
+        "duration": "172µs 27ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1330,14 +1330,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "208µs 164ns",
+        "duration": "106µs 934ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1354,14 +1354,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "228µs 194ns",
+        "duration": "145µs 527ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1378,14 +1378,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "258µs 822ns",
+        "duration": "177µs 222ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1402,14 +1402,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "201µs 417ns",
+        "duration": "147µs 325ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1426,14 +1426,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "46µs 96ns",
+        "duration": "56µs 963ns",
         "breakpoints": {},
         "gas_snapshots": {}
       },
@@ -1450,14 +1450,14 @@
         },
         "traces": [],
         "labeled_addresses": {
-          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer",
-          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
+          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider",
           "0xb83dce391256ac9bc4b9be62117039bc46f144a5": "DD01 registered fixture vault",
           "0x2becc9c1545eea1969578ee0e61be786c9a8fe39": "DD01 Cactus cancellation wallet",
+          "0xfdc55ac34c9e5cd7888d4d125f0552282d08d48a": "DD01 RWA token",
           "0x7f41c84b5b7a6b147d98448a67a96885dda26d2a": "DD01 Cactus protocol wallet",
-          "0x41f8b94c0795e08166a69b6006a63829dca3ba43": "DD01 outsider"
+          "0xc189a9d986843a0e3f0624cea4e391661e159c08": "DD01 NAV signer"
         },
-        "duration": "101µs 224ns",
+        "duration": "125µs 734ns",
         "breakpoints": {},
         "gas_snapshots": {}
       }
