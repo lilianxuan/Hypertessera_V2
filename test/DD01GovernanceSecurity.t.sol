@@ -6,7 +6,7 @@ import {TimelockController} from "@openzeppelin/contracts/governance/TimelockCon
 import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
 import {Errors} from "@openzeppelin/contracts/utils/Errors.sol";
 import {HyperAccessControl} from "../src/governance/HyperAccessControl.sol";
-import {GovernanceController} from "../src/governance/GovernanceController.sol";
+import {GovernanceController} from "../src/Addition/GovernanceController.sol";
 import {NAVOracle} from "../src/asset-infrastructure/NAVOracle.sol";
 import {IReservePSM} from "../src/interfaces/IReservePSM.sol";
 import {CreationFeeAction, FeePaymentKind, ModuleId} from "../src/libs/Types.sol";

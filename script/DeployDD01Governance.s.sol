@@ -4,7 +4,7 @@ pragma solidity 0.8.24;
 import {Script} from "forge-std/Script.sol";
 import {console2} from "forge-std/console2.sol";
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
-import {GovernanceController} from "../src/governance/GovernanceController.sol";
+import {GovernanceController} from "../src/Addition/GovernanceController.sol";
 import {IStateManager} from "../src/interfaces/IStateManager.sol";
 
 interface IDD01AccessControlBinding {

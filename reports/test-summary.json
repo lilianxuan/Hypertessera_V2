@@ -1,5 +1,5 @@
 {
-  "checkedAtHongKong": "2026-11-10T18:42:23.771620+08:00",
+  "checkedAtHongKong": "2026-11-10T18:57:09.711681+08:00",
   "dd01": {
     "suites": [
       {
@@ -332,5 +332,9 @@
   "foundry": "1.8.3",
   "localVirtualEVMOnly": true,
   "liveChainTransactions": 0,
-  "thirdPartyAuditCompleted": false
+  "thirdPartyAuditCompleted": false,
+  "sourceLayout": {
+    "governanceController": "src/Addition/GovernanceController.sol",
+    "businessLogicChangedByMove": false
+  }
 }

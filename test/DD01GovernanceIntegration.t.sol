@@ -7,7 +7,7 @@ import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol"
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {ERC1967Utils} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol";
-import {GovernanceController} from "../src/governance/GovernanceController.sol";
+import {GovernanceController} from "../src/Addition/GovernanceController.sol";
 import {HyperAccessControl} from "../src/governance/HyperAccessControl.sol";
 import {StateManager} from "../src/asset-management/StateManager.sol";
 import {UnifiedPool} from "../src/asset-management/settlement/UnifiedPool.sol";

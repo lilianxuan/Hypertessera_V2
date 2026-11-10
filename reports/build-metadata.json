@@ -1,6 +1,6 @@
 {
   "contract": "GovernanceController",
-  "source": "src/governance/GovernanceController.sol",
+  "source": "src/Addition/GovernanceController.sol",
   "sourceSHA256": "53f05dde7bdce4d34f0836db4b88211bed1a198a8df6518a18bb78b282708a9d",
   "compiler": {
     "version": "0.8.24+commit.e11b9ed9"
@@ -22,7 +22,7 @@
       "bytecodeHash": "ipfs"
     },
     "compilationTarget": {
-      "src/governance/GovernanceController.sol": "GovernanceController"
+      "src/Addition/GovernanceController.sol": "GovernanceController"
     },
     "evmVersion": "cancun",
     "libraries": {},

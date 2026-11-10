@@ -7,7 +7,7 @@
   "missingOriginalFiles": [],
   "allOriginalFilesByteForByteUnchanged": true,
   "newBusinessSourceFiles": [
-    "src/governance/GovernanceController.sol"
+    "src/Addition/GovernanceController.sol"
   ],
   "originalFileHashes": {
     ".github/workflows/ci.yml": "02dc68d9df6d3ed2ad40633ae632326028962100b7ace0ead363c0f0b7f15d95",

@@ -16,7 +16,7 @@ Controller 的 Pool 转账路径目前只增加时间锁；不要据此宣称 [0
 
 ## 2. 文件及依赖
 
-- `src/governance/GovernanceController.sol`：唯一新增业务合约，带 NatSpec 和关键中文说明。
+- `src/Addition/GovernanceController.sol`：唯一新增业务合约，带 NatSpec 和关键中文说明。
 - `script/DeployDD01Governance.s.sol`：标准时间锁和 Controller 的部署/模拟脚本；只部署新合约，
   不自动授权 Governor、撤销原角色、移交 Oracle Owner 或更改原协议配置。
 - `test/DD01GovernanceSecurity.t.sol`：权限、时间锁及绕过测试。
