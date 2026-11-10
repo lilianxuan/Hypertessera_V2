@@ -1,0 +1,336 @@
+{
+  "checkedAtHongKong": "2026-11-10T18:42:23.771620+08:00",
+  "dd01": {
+    "suites": [
+      {
+        "suite": "test/DD01GovernanceDeployment.t.sol:DD01GovernanceDeploymentTest",
+        "tests": 6,
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/DD01GovernanceIntegration.t.sol:DD01GovernanceIntegrationTest",
+        "tests": 18,
+        "passed": 18,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/DD01GovernanceSecurity.t.sol:DD01GovernanceSecurityTest",
+        "tests": 36,
+        "passed": 36,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      }
+    ],
+    "tests": 60,
+    "passed": 60,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fullRegression": {
+    "suites": [
+      {
+        "suite": "test/AdapterFactory.t.sol:AdapterFactoryTest",
+        "tests": 21,
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/AssetRegistry.t.sol:AssetRegistryTest",
+        "tests": 61,
+        "passed": 61,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/BaseAdapter.t.sol:BaseAdapterTest",
+        "tests": 72,
+        "passed": 72,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/ClaimRegistry.t.sol:ClaimRegistryTest",
+        "tests": 16,
+        "passed": 16,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/DD01GovernanceDeployment.t.sol:DD01GovernanceDeploymentTest",
+        "tests": 6,
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/DD01GovernanceIntegration.t.sol:DD01GovernanceIntegrationTest",
+        "tests": 18,
+        "passed": 18,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/DD01GovernanceSecurity.t.sol:DD01GovernanceSecurityTest",
+        "tests": 36,
+        "passed": 36,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/DeployConfig.t.sol:DeployConfigTest",
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/DeployConfig.t.sol:DeployVaultInputsTest",
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/DeployVault.t.sol:DeployVaultTest",
+        "tests": 11,
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/EarnVault.t.sol:EarnVaultTest",
+        "tests": 177,
+        "passed": 177,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/HyperAccessControl.t.sol:HyperAccessControlTest",
+        "tests": 14,
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/KYTDepositGateway.t.sol:KYTDepositGatewayTest",
+        "tests": 43,
+        "passed": 43,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/LiquidityAdapter.t.sol:LiquidityAdapterTest",
+        "tests": 9,
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/LiquidityBridge.t.sol:LiquidityBridgeTest",
+        "tests": 15,
+        "passed": 15,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/LiquidityEarnVault.t.sol:LiquidityEarnVaultTest",
+        "tests": 26,
+        "passed": 26,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/MintBurnController.t.sol:MintBurnControllerTest",
+        "tests": 40,
+        "passed": 40,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/NAVOracle.t.sol:NAVOracleTest",
+        "tests": 39,
+        "passed": 39,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/PoRRegistry.t.sol:PoRRegistryTest",
+        "tests": 14,
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/ProtocolFeeConfig.t.sol:ProtocolFeeConfigTest",
+        "tests": 18,
+        "passed": 18,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/Queue.t.sol:QueueTest",
+        "tests": 19,
+        "passed": 19,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/RWAAdapter.t.sol:RWAAdapterTest",
+        "tests": 21,
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/RWAToken.t.sol:RWATokenTest",
+        "tests": 37,
+        "passed": 37,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/ReservePSM.t.sol:ReservePSMTest",
+        "tests": 50,
+        "passed": 50,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/RevenuePool.t.sol:RevenuePoolTest",
+        "tests": 38,
+        "passed": 38,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/Settlement.t.sol:SettlementTest",
+        "tests": 33,
+        "passed": 33,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/SettlementOrdering.t.sol:SettlementOrderingTest",
+        "tests": 9,
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/SettlementTokenDecimals.t.sol:SettlementToken18DecimalsTest",
+        "tests": 16,
+        "passed": 16,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/SettlementTokenDecimals.t.sol:SettlementToken6DecimalsTest",
+        "tests": 16,
+        "passed": 16,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/StateManager.t.sol:StateManagerTest",
+        "tests": 105,
+        "passed": 105,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/UnifiedPool.t.sol:UnifiedPoolTest",
+        "tests": 66,
+        "passed": 66,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/VaultAdapterFunding.t.sol:NonStandardUSDTFundingTest",
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/VaultAdapterFunding.t.sol:VaultAdapterFundingTest",
+        "tests": 18,
+        "passed": 18,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/VaultFactory.t.sol:VaultFactoryTest",
+        "tests": 21,
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/VaultTimelock.t.sol:VaultTimelockTest",
+        "tests": 57,
+        "passed": 57,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      {
+        "suite": "test/WrappedAsset.t.sol:WrappedAssetTest",
+        "tests": 23,
+        "passed": 23,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      }
+    ],
+    "tests": 1170,
+    "passed": 1170,
+    "failed": 0,
+    "skipped": 0
+  },
+  "solidity": "0.8.24",
+  "foundry": "1.8.3",
+  "localVirtualEVMOnly": true,
+  "liveChainTransactions": 0,
+  "thirdPartyAuditCompleted": false
+}

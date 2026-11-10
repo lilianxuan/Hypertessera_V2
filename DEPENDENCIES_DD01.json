@@ -1,0 +1,8 @@
+{
+  "solidity": "0.8.24",
+  "foundry": "1.8.3",
+  "openzeppelinVersion": "5.1.0",
+  "openzeppelinCommit": "69c8def5f222ff96f2b5beff05dfba996368aa79",
+  "forgeStdCommit": "620536fa5277db4e3fd46772d5cbc1ea0696fb43",
+  "dependencySource": "Local Ethereum production project libraries; source baseline remains the supplied ZIP"
+}

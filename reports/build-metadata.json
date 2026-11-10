@@ -1,0 +1,34 @@
+{
+  "contract": "GovernanceController",
+  "source": "src/governance/GovernanceController.sol",
+  "sourceSHA256": "53f05dde7bdce4d34f0836db4b88211bed1a198a8df6518a18bb78b282708a9d",
+  "compiler": {
+    "version": "0.8.24+commit.e11b9ed9"
+  },
+  "settings": {
+    "remappings": [
+      "@openzeppelin/=lib/openzeppelin-contracts/",
+      "ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/",
+      "erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+      "forge-std/=lib/forge-std/src/",
+      "halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/",
+      "openzeppelin-contracts/=lib/openzeppelin-contracts/"
+    ],
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "compilationTarget": {
+      "src/governance/GovernanceController.sol": "GovernanceController"
+    },
+    "evmVersion": "cancun",
+    "libraries": {},
+    "viaIR": true
+  },
+  "creationBytecodeBytes": 10612,
+  "runtimeBytecodeBytesBeforeImmutableInstantiation": 8925,
+  "notADeployedRuntime": true
+}
