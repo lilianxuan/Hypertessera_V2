@@ -23,6 +23,7 @@ HyperAccessControl / VaultTimelock 源码均未改动。
 - [尽调修改方案](docs/尽调修改方案.md)
 - [新增治理控制合约](src/addition/GovernanceController.sol)
 - [协议级标准时间锁](src/addition/TimelockController.sol)
+- [OpenZeppelin 来源与审计范围](src/addition/README.md)
 - [部署及公开配置检查脚本](script/DeployDD01Governance.s.sol)
 - [安全测试](test/DD01GovernanceSecurity.t.sol)
 - [真实协议整合测试](test/DD01GovernanceIntegration.t.sol)
