@@ -122,7 +122,7 @@ contract DD01GovernanceDeploymentTest is Test {
         assertGt(address(timelock).code.length, 0);
         assertGt(address(controller).code.length, 0);
         assertEq(uint256(vm.getNonce(deployer)), senderNonceBefore + 2);
-        assertEq(timelock.getMinDelay(), 7 days);
+        assertEq(timelock.getMinDelay(), 1 days);
         assertTrue(timelock.hasRole(timelock.DEFAULT_ADMIN_ROLE(), address(timelock)));
         assertFalse(timelock.hasRole(timelock.DEFAULT_ADMIN_ROLE(), deployer));
         assertFalse(timelock.hasRole(timelock.DEFAULT_ADMIN_ROLE(), cactus));

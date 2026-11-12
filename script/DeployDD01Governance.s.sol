@@ -27,7 +27,7 @@ interface IDD01SettlementTokenBinding {
 ///      ownership, or changes any original protocol setting. Those steps are separate and
 ///      require verified receipts plus complete role-history reconciliation.
 contract DeployDD01Governance is Script {
-    uint256 public constant INITIAL_DELAY = 7 days;
+    uint256 public constant INITIAL_DELAY = 1 days;
 
     error WrongChain(uint256 expected, uint256 actual);
     error InvalidWalletConfiguration();

@@ -58,10 +58,10 @@ contract DD01SecuritySuccessorMock {}
 /// @title DD01GovernanceSecurityTest
 /// @notice Exercises the real AccessControl and standard OZ Timelock around the new router.
 ///         Cactus is one configured on-chain wallet, not an on-chain multisignature algorithm.
-///         Seven days is the INITIAL configured delay; standard OZ governance can update it.
+///         The initial delay is one day. Standard OZ governance can update it.
 ///         No custom pause, DAO, DD [02] limits or DD [03] price logic is asserted here.
 contract DD01GovernanceSecurityTest is Test {
-    uint256 internal constant DELAY = 7 days;
+    uint256 internal constant DELAY = 1 days;
     uint256 internal constant START = 1_800_000_000;
 
     HyperAccessControl internal ac;
@@ -200,7 +200,7 @@ contract DD01GovernanceSecurityTest is Test {
         assertFalse(pool.vaultWhitelisted(vault));
     }
 
-    function testSevenDayBoundaryAndExecutedReplay() public {
+    function testOneDayBoundaryAndExecutedReplay() public {
         bytes memory data = abi.encodeCall(controller.setVaultWhitelisted, (vault, true));
         uint256 scheduledAt = vm.getBlockTimestamp();
         (bytes32 salt, bytes32 id) = _schedule(address(controller), data);
@@ -450,7 +450,7 @@ contract DD01GovernanceSecurityTest is Test {
     }
 
     function testStandardDelayChangesRequireScheduledSelfCall() public {
-        // Standard Timelock is intentionally not described as a permanent seven-day floor.
+        // A scheduled self-call can update the minimum delay for future operations.
         vm.expectRevert(abi.encodeWithSelector(TimelockController.TimelockUnauthorizedCaller.selector, cactus));
         vm.prank(cactus);
         tl.updateDelay(0);

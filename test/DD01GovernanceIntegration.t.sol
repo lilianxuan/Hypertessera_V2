@@ -85,7 +85,7 @@ contract DD01NotUUPSImplementation {
 ///      Governor. It does NOT claim this is production role-history discovery, a DD [02]
 ///      transfer-cap fix, or a change to DD [03] price publication and freshness semantics.
 contract DD01GovernanceIntegrationTest is Test {
-    uint256 internal constant DELAY = 7 days;
+    uint256 internal constant DELAY = 1 days;
     uint256 internal constant OLD_DOC_ID = 100;
     uint256 internal constant NEW_DOC_ID = 101;
     bytes32 internal constant IMPLEMENTATION_SLOT = bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1);
@@ -258,7 +258,7 @@ contract DD01GovernanceIntegrationTest is Test {
         vm.stopPrank();
     }
 
-    function test_RealPoolTransfersRequireFullSevenDaysAndPreserveExistingLedger() public {
+    function test_RealPoolTransfersRequireOneDayAndPreserveExistingLedger() public {
         _seedPoolClaim(1_000e6);
         bytes memory thirdParty = abi.encodeCall(
             GovernanceController.operatorTransfer, (address(vault), recipient, 75e6, keccak256("third party"))
@@ -484,7 +484,7 @@ contract DD01GovernanceIntegrationTest is Test {
         assertFalse(bridge.bridgeWhitelisted(unregisteredVault));
 
         // Legacy cleanup is permitted, but new admission and zero-address removal remain
-        // invalid even when their proposals have satisfied the complete seven-day delay.
+        // invalid even after their proposals have satisfied the one-day delay.
         bytes memory readmit = abi.encodeCall(GovernanceController.setBridgeWhitelisted, (unregisteredVault, true));
         bytes memory revokeZero = abi.encodeCall(GovernanceController.setBridgeWhitelisted, (address(0), false));
         (bytes32 readmitSalt, bytes32 readmitId) = _schedule(readmit);

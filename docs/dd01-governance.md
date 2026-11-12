@@ -34,7 +34,7 @@ Controller 的 Pool 转账路径目前只增加时间锁；不要据此宣称 [0
 - 配置 RevenuePool 时，在部署前校验其 `usdt()` 与 UnifiedPool 的 `usdt()` 一致，
   避免固定收入路径使用不同结算代币。该检查不改变任何原合约配置。
 - Bridge 白名单准入仍验证 Vault 已注册；撤销只禁止零地址，允许清理历史错误条目。
-- 补充以上场景的回归测试；原协议合约、权限边界和初始 7 天等待期保持不变。
+- 补充以上场景的回归测试。
 
 测试依赖锁定为 OpenZeppelin 5.1.0
 (`69c8def5f222ff96f2b5beff05dfba996368aa79`)、forge-std
@@ -45,7 +45,7 @@ Controller 的 Pool 转账路径目前只增加时间锁；不要据此宣称 [0
 
 ```text
 Cactus Governor 钱包（提案、执行，并保留标准取消权）
-    -> TimelockController（初始等待 7 days，self-admin）
+    -> TimelockController（初始最低等待 1 天，self-admin）
     -> GovernanceController（原协议唯一 Governor）
     -> 原协议合约
 
@@ -56,10 +56,10 @@ Cactus Guardian 钱包 -> TimelockController.cancel（仅取消未执行提案�
 - 时间锁构造参数 `admin=address(0)`，不设置外部 bootstrap 管理员。
 - 不配置 `address(0)` 为执行人。初始 proposer/executor 使用同一个现有 Cactus 钱包。
 - Guardian 取消权通过标准时间锁自调用 `grantRole(CANCELLER_ROLE, guardian)` 配置。
-  这一步本身也等待 7 天，应在生产角色移交前完成。无需额外临时管理员。
+  初始配置下，这一步也须等待 1 天，应在生产角色移交前完成。
 - 相同 Cactus 地址提案和执行不等于链上多签；人员审批仍由现有 Cactus 流程完成。
-- 7 天是初始配置，不是永远不可更改的硬底线。标准 `updateDelay` 只能由时间锁自调用，
-  修改本身须先遵守当前等待期。角色调整亦遵守标准自管理流程。
+- 部署脚本将初始最低延迟设为 1 天（86,400 秒）。修改后续最低延迟须按当时的等待期
+  排队，通过时间锁自调用 `updateDelay`。角色调整也遵守标准自管理流程。
 - 后续不得把外部管理员或开放执行权限写成与本配置等价；若治理决定改变这些设置，
   应重新说明风险和治理边界，不能沿用“当前没有外部管理员”的结论。
 
@@ -154,7 +154,7 @@ GOVERNANCE_NAV_ORACLES           # 可选，逗号分隔的公开地址
 相应管理功能将不可用。部署前脚本会核对各模块的 ACL/StateManager 公开绑定。
 
 Controller 构造检查目标代码和非零初始延迟，但不能单靠该检查证明标准时间锁源码、
-7天配置、正确角色或整个目标系统的一致性；部署脚本及后续链上核验须一起完成。
+1 天配置、正确角色或整个目标系统的一致性；部署脚本及后续链上核验须一起完成。
 
 ## 7. 权限切换顺序
 
