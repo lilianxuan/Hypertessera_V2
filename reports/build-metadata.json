@@ -1,7 +1,7 @@
 {
   "contract": "GovernanceController",
   "source": "src/addition/GovernanceController.sol",
-  "sourceSHA256": "668dc8c8b66314f64da0e03770e86a8cae23e13dac74de2efe31774356b63d36",
+  "sourceSHA256": "e29db80c6a7d48fe69565fb91f42b2bf98a3fccdce9a8d02b28ae5453082a0ab",
   "compiler": {
     "version": "0.8.24+commit.e11b9ed9"
   },

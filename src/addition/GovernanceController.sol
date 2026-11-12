@@ -3,6 +3,8 @@ pragma solidity 0.8.24;
 
 import {TimelockController} from "./TimelockController.sol";
 import {IHyperAccessControl} from "../interfaces/IHyperAccessControl.sol";
+import {IBaseVault} from "../interfaces/IBaseVault.sol";
+import {INAVOracle} from "../interfaces/INAVOracle.sol";
 import {IStateManager} from "../interfaces/IStateManager.sol";
 import {IUnifiedPool} from "../interfaces/IUnifiedPool.sol";
 import {IRevenuePool} from "../interfaces/IRevenuePool.sol";
@@ -15,18 +17,6 @@ import {CreationFeeAction, FeePaymentKind, ModuleId} from "../libs/Types.sol";
 interface IGovernancePoolUpgrade {
     function upgradeToAndCall(address implementation, bytes calldata initializationData) external payable;
     function reinitializeStateManager(address stateManager) external;
-}
-
-interface IGovernanceVaultFee {
-    function setProtocolFeeConfig(address revenuePool, uint16 protocolFeeShareBps) external;
-}
-
-interface IGovernanceNAVOwner {
-    function owner() external view returns (address);
-    function setSigner(address rwaToken, address signer) external;
-    function removeSigner(address rwaToken) external;
-    function setNAVDeviationMaxBps(uint256 newBps) external;
-    function transferOwnership(address newOwner) external;
 }
 
 /// @title GovernanceController
@@ -238,7 +228,7 @@ contract GovernanceController {
     function setVaultProtocolFeeConfig(address vault, uint16 protocolFeeShareBps) external onlyTimelock {
         _requireModule(address(revenuePool));
         _requireRegistered(vault);
-        IGovernanceVaultFee(vault).setProtocolFeeConfig(address(revenuePool), protocolFeeShareBps);
+        IBaseVault(vault).setProtocolFeeConfig(address(revenuePool), protocolFeeShareBps);
     }
 
     // ---------------------------------------------------------------------
@@ -340,20 +330,20 @@ contract GovernanceController {
     function setOracleSigner(address oracle, address rwaToken, address signer) external onlyTimelock {
         _requireOracle(oracle);
         if (rwaToken == address(0) || signer == address(0)) revert InvalidAddress();
-        IGovernanceNAVOwner(oracle).setSigner(rwaToken, signer);
+        INAVOracle(oracle).setSigner(rwaToken, signer);
     }
 
     /// @notice Remove a signer through the same delayed ownership route; no new emergency role.
     function removeOracleSigner(address oracle, address rwaToken) external onlyTimelock {
         _requireOracle(oracle);
         if (rwaToken == address(0)) revert InvalidAddress();
-        IGovernanceNAVOwner(oracle).removeSigner(rwaToken);
+        INAVOracle(oracle).removeSigner(rwaToken);
     }
 
     /// @notice Forward the original deviation configuration, not a new pricing algorithm.
     function setOracleNAVDeviationMaxBps(address oracle, uint256 newBps) external onlyTimelock {
         _requireOracle(oracle);
-        IGovernanceNAVOwner(oracle).setNAVDeviationMaxBps(newBps);
+        INAVOracle(oracle).setNAVDeviationMaxBps(newBps);
     }
 
     /// @notice Hand oracle ownership to another reviewed contract after the timelock.
@@ -363,7 +353,7 @@ contract GovernanceController {
         _requireOracle(oracle);
         _requireContract(newOwner);
         if (newOwner == address(this)) revert InvalidSuccessor();
-        IGovernanceNAVOwner(oracle).transferOwnership(newOwner);
+        INAVOracle(oracle).transferOwnership(newOwner);
         emit OracleOwnershipTransferred(oracle, newOwner);
     }
 
@@ -395,7 +385,7 @@ contract GovernanceController {
 
     function _requireOracle(address oracle) internal view {
         if (!managedOracles[oracle]) revert OracleNotManaged(oracle);
-        if (IGovernanceNAVOwner(oracle).owner() != address(this)) revert OracleNotOwned(oracle);
+        if (INAVOracle(oracle).owner() != address(this)) revert OracleNotOwned(oracle);
     }
 
     function _requireWrapperControl(uint256 assetId) internal view {
